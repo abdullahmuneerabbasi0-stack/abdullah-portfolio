@@ -13,19 +13,19 @@ const ease = [0.22, 1, 0.36, 1] as const;
 function RotatingRole() {
   const [i, setI] = useState(0);
   useEffect(() => {
-    const id = setInterval(() => setI((v) => (v + 1) % profile.roles.length), 2800);
+    const id = setInterval(() => setI((v) => (v + 1) % profile.roles.length), 3000);
     return () => clearInterval(id);
   }, []);
   return (
-    <span className="relative grid min-h-[2.3em] overflow-hidden pt-[0.08em] text-[0.85em]">
-      <AnimatePresence mode="popLayout" initial={false}>
+    <span className="block min-h-[2.2em] text-[0.85em] lg:min-h-[1.15em]">
+      <AnimatePresence mode="wait" initial={false}>
         <motion.span
           key={i}
-          initial={{ y: "100%", opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: "-100%", opacity: 0 }}
-          transition={{ duration: 0.55, ease }}
-          className="text-gradient col-start-1 row-start-1 pb-[0.05em]"
+          initial={{ opacity: 0, filter: "blur(8px)", y: 12 }}
+          animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+          exit={{ opacity: 0, filter: "blur(8px)", y: -12 }}
+          transition={{ duration: 0.45, ease }}
+          className="text-gradient inline-block pb-[0.08em]"
         >
           {profile.roles[i]}
         </motion.span>
