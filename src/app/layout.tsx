@@ -54,7 +54,7 @@ const personJsonLd = {
   name: profile.name,
   jobTitle: profile.roles.join(" & "),
   url: siteUrl,
-  sameAs: [contact.github, contact.linkedin].filter(Boolean),
+  sameAs: [contact.github, contact.linkedin, contact.facebook, contact.instagram].filter(Boolean),
   knowsAbout: ["Web development", "C++", "Java", "C#", "SQL", "AI-assisted development"],
   address: { "@type": "PostalAddress", addressCountry: "PK" },
 };

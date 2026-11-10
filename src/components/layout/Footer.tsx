@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { contact, profile } from "@/content/site";
-import { GithubIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
+import { FacebookIcon, GithubIcon, InstagramIcon, LinkedinIcon } from "@/components/ui/BrandIcons";
 
 export function Footer() {
   return (
@@ -21,6 +21,16 @@ export function Footer() {
           {contact.linkedin && (
             <a href={contact.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-text">
               <LinkedinIcon className="h-5 w-5" />
+            </a>
+          )}
+          {contact.facebook && (
+            <a href={contact.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="hover:text-text">
+              <FacebookIcon className="h-5 w-5" />
+            </a>
+          )}
+          {contact.instagram && (
+            <a href={contact.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="hover:text-text">
+              <InstagramIcon className="h-5 w-5" />
             </a>
           )}
         </div>

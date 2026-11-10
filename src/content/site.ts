@@ -52,11 +52,15 @@ export const profile = {
 
 /** Leave a value as null to hide that contact option. */
 export const contact = {
-  email: null as string | null,
-  /** Digits only, with country code, e.g. "923001234567". */
+  email: "muhammadabdullahabbasi012@gmail.com" as string | null,
+  /** Shown as written; the call link uses the digits only. */
+  phone: "+92 304 2621504" as string | null,
+  /** Digits only, with country code, e.g. "923001234567". Null hides WhatsApp. */
   whatsapp: null as string | null,
-  linkedin: null as string | null,
+  linkedin: "https://www.linkedin.com/in/abdullah-abbasi-56743739a" as string | null,
   github: "https://github.com/abdullahmuneerabbasi0-stack",
+  facebook: "https://www.facebook.com/share/1Ducz4AFrR/" as string | null,
+  instagram: "https://www.instagram.com/blackpantherwxf" as string | null,
 };
 
 export type SkillGroup = { title: string; icon: string; skills: string[] };

@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
-import { ArrowUpRight, Download, Mail } from "lucide-react";
+import { ArrowUpRight, Download, Mail, Phone } from "lucide-react";
 import { contact, profile } from "@/content/site";
-import { GithubIcon, LinkedinIcon, WhatsappIcon } from "@/components/ui/BrandIcons";
+import { FacebookIcon, GithubIcon, InstagramIcon, LinkedinIcon, WhatsappIcon } from "@/components/ui/BrandIcons";
 import { Reveal } from "@/components/ui/Reveal";
 import { Spotlight } from "@/components/ui/Spotlight";
 
@@ -11,6 +11,14 @@ export function Contact() {
   const all: (Channel | null)[] = [
     contact.email
       ? { label: "Email", value: contact.email, href: `mailto:${contact.email}`, icon: <Mail className="h-5 w-5" /> }
+      : null,
+    contact.phone
+      ? {
+          label: "Phone",
+          value: contact.phone,
+          href: `tel:+${contact.phone.replace(/\D/g, "")}`,
+          icon: <Phone className="h-5 w-5" />,
+        }
       : null,
     contact.whatsapp
       ? {
@@ -25,6 +33,12 @@ export function Contact() {
       ? { label: "LinkedIn", value: "Connect with me", href: contact.linkedin, icon: <LinkedinIcon className="h-5 w-5" />, external: true }
       : null,
     { label: "GitHub", value: "See my code", href: contact.github, icon: <GithubIcon className="h-5 w-5" />, external: true },
+    contact.facebook
+      ? { label: "Facebook", value: "Follow me", href: contact.facebook, icon: <FacebookIcon className="h-5 w-5" />, external: true }
+      : null,
+    contact.instagram
+      ? { label: "Instagram", value: "Follow me", href: contact.instagram, icon: <InstagramIcon className="h-5 w-5" />, external: true }
+      : null,
   ];
   const channels = all.filter((c): c is Channel => c !== null);
 
@@ -32,7 +46,7 @@ export function Contact() {
     <section id="contact" className="px-6 py-24 md:py-32">
       <div className="mx-auto max-w-6xl">
         <Reveal>
-          <div className="glass relative overflow-hidden rounded-3xl p-8 sm:p-12 lg:p-16">
+          <div className="glass relative overflow-hidden rounded-3xl p-6 sm:p-12 lg:p-16">
             <div aria-hidden="true" className="bg-accent-gradient absolute -top-32 -right-32 h-80 w-80 rounded-full opacity-20 blur-3xl" />
             <p className="mb-3 font-mono text-xs uppercase tracking-[0.25em] text-accent-2">Contact</p>
             <h2 className="max-w-2xl font-display text-4xl font-bold tracking-tight sm:text-5xl">
@@ -49,13 +63,13 @@ export function Contact() {
                     <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-accent/10 text-accent-2">{c.icon}</span>
                     <span className="min-w-0 flex-1">
                       <span className="block text-sm text-muted">{c.label}</span>
-                      <span className="block truncate font-medium">{c.value}</span>
+                      <span className="block font-medium break-words [overflow-wrap:anywhere]">{c.value}</span>
                     </span>
                     {<ArrowUpRight className="h-5 w-5 text-muted transition group-hover:text-accent-3" />}
                   </>
                 );
                 return (
-                  <li key={c.label}>
+                  <li key={c.label} className="min-w-0">
                     {(
                       <Spotlight className="transition-transform hover:-translate-y-0.5">
                         <a
