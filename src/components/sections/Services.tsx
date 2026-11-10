@@ -13,7 +13,7 @@ export function Services() {
         <SectionHeading
           eyebrow="Services"
           title="How I can help"
-          intro="From idea to launch, I build the product and the automation behind it."
+          intro="Services I offer to businesses and individuals who want a modern online presence or smarter workflows."
         />
         <div className="grid gap-5 md:grid-cols-2">
           {services.map((s, i) => (

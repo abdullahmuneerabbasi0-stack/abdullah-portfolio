@@ -1,43 +1,32 @@
 import type { ReactNode } from "react";
 import { ArrowUpRight, Download, Mail } from "lucide-react";
 import { contact, profile } from "@/content/site";
-import { T, isPlaceholder } from "@/components/ui/T";
 import { GithubIcon, LinkedinIcon, WhatsappIcon } from "@/components/ui/BrandIcons";
 import { Reveal } from "@/components/ui/Reveal";
 import { Spotlight } from "@/components/ui/Spotlight";
 
-type Channel = { label: string; value: ReactNode; href: string | null; icon: ReactNode; external?: boolean };
+type Channel = { label: string; value: ReactNode; href: string; icon: ReactNode; external?: boolean };
 
 export function Contact() {
-  const channels: Channel[] = [
-    {
-      label: "Email",
-      value: <T value={contact.email} />,
-      href: isPlaceholder(contact.email) ? null : `mailto:${contact.email as string}`,
-      icon: <Mail className="h-5 w-5" />,
-    },
-    {
-      label: "WhatsApp",
-      value: <T value={contact.whatsapp} />,
-      href: contact.whatsappLink ? `https://wa.me/${contact.whatsappLink}` : null,
-      icon: <WhatsappIcon className="h-5 w-5" />,
-      external: true,
-    },
-    {
-      label: "LinkedIn",
-      value: contact.linkedin ? "Connect with me" : <T value={{ placeholder: "LinkedIn profile URL" }} />,
-      href: contact.linkedin,
-      icon: <LinkedinIcon className="h-5 w-5" />,
-      external: true,
-    },
-    {
-      label: "GitHub",
-      value: "See my code",
-      href: contact.github,
-      icon: <GithubIcon className="h-5 w-5" />,
-      external: true,
-    },
+  const all: (Channel | null)[] = [
+    contact.email
+      ? { label: "Email", value: contact.email, href: `mailto:${contact.email}`, icon: <Mail className="h-5 w-5" /> }
+      : null,
+    contact.whatsapp
+      ? {
+          label: "WhatsApp",
+          value: "Chat on WhatsApp",
+          href: `https://wa.me/${contact.whatsapp}`,
+          icon: <WhatsappIcon className="h-5 w-5" />,
+          external: true,
+        }
+      : null,
+    contact.linkedin
+      ? { label: "LinkedIn", value: "Connect with me", href: contact.linkedin, icon: <LinkedinIcon className="h-5 w-5" />, external: true }
+      : null,
+    { label: "GitHub", value: "See my code", href: contact.github, icon: <GithubIcon className="h-5 w-5" />, external: true },
   ];
+  const channels = all.filter((c): c is Channel => c !== null);
 
   return (
     <section id="contact" className="px-6 py-24 md:py-32">
@@ -50,7 +39,7 @@ export function Contact() {
               Let&apos;s build something <span className="text-gradient">remarkable</span>.
             </h2>
             <p className="mt-4 max-w-xl text-lg text-muted">
-              Have a project, a role or an idea? Reach out on any channel below and I&apos;ll get back to you.
+              Have a project, an opportunity or an idea? Reach out below and I&apos;ll get back to you.
             </p>
 
             <ul className="mt-10 grid gap-4 sm:grid-cols-2">
@@ -62,12 +51,12 @@ export function Contact() {
                       <span className="block text-sm text-muted">{c.label}</span>
                       <span className="block truncate font-medium">{c.value}</span>
                     </span>
-                    {c.href && <ArrowUpRight className="h-5 w-5 text-muted transition group-hover:text-accent-3" />}
+                    {<ArrowUpRight className="h-5 w-5 text-muted transition group-hover:text-accent-3" />}
                   </>
                 );
                 return (
                   <li key={c.label}>
-                    {c.href ? (
+                    {(
                       <Spotlight className="transition-transform hover:-translate-y-0.5">
                         <a
                           href={c.href}
@@ -77,8 +66,6 @@ export function Contact() {
                           {inner}
                         </a>
                       </Spotlight>
-                    ) : (
-                      <div className="glass flex items-center gap-4 rounded-2xl p-5">{inner}</div>
                     )}
                   </li>
                 );

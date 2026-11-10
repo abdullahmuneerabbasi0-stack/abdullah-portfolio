@@ -1,6 +1,6 @@
-# Abdullah Abbasi — Portfolio
+# Muhammad Abdullah — Portfolio
 
-Personal portfolio of Abdullah Abbasi, Full-Stack Developer and AI Automation Specialist.
+Personal portfolio of Muhammad Abdullah, Full-Stack Developer and AI Automation Specialist.
 
 Built with Next.js (App Router), React, TypeScript, Tailwind CSS v4 and Motion. Fully static, deployed on Vercel.
 

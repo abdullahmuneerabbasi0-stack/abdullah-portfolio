@@ -1,4 +1,4 @@
-import { Code2, Bot, Rocket } from "lucide-react";
+import { Hammer, Bot, Briefcase } from "lucide-react";
 import { profile } from "@/content/site";
 import { T } from "@/components/ui/T";
 import { Reveal } from "@/components/ui/Reveal";
@@ -6,16 +6,16 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Spotlight } from "@/components/ui/Spotlight";
 
 const pillars = [
-  { icon: Code2, title: "End-to-end builder", text: "From database design and APIs to the final animated interface." },
-  { icon: Bot, title: "AI-first thinking", text: "I look for where AI and automation can remove repetitive work." },
-  { icon: Rocket, title: "Product mindset", text: "Clean, maintainable code focused on real outcomes for users." },
+  { icon: Hammer, title: "Learning by building", text: "I grow my skills through practical projects, not just tutorials." },
+  { icon: Bot, title: "AI-assisted development", text: "I use AI tools to plan, build and ship projects faster." },
+  { icon: Briefcase, title: "Business-focused", text: "I care about technology that solves real business problems." },
 ];
 
 export function About() {
   return (
     <section id="about" className="px-6 py-24 md:py-32">
       <div className="mx-auto max-w-6xl">
-        <SectionHeading eyebrow="About me" title="Building the web, powered by AI" />
+        <SectionHeading eyebrow="About me" title="An ambitious developer on a building journey" />
         <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr]">
           <Reveal className="space-y-5 text-lg leading-relaxed text-muted">
             {profile.about.map((p, i) => (

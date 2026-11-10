@@ -26,70 +26,71 @@ export const siteUrl =
     : "http://localhost:3000");
 
 export const profile = {
-  name: "Abdullah Abbasi",
+  name: "Muhammad Abdullah",
   shortName: "Abdullah",
-  initials: "AA",
+  initials: "MA",
   roles: ["Full-Stack Developer", "AI Automation Specialist"],
   headline:
-    "I build fast, premium web applications and AI-powered automations that save businesses time.",
-  location: ph("City, Country") as Text,
-  availability: "Open to new projects and opportunities",
+    "An ambitious developer building practical digital products and solving business problems through web development, SaaS and AI automation.",
+  location: "Pakistan" as Text,
+  availability: "Open to projects and opportunities",
   /** Put the photo at public/profile.jpg and set this to "/profile.jpg". */
   photo: null as string | null,
   /** Put the CV at public/cv.pdf and set this to "/cv.pdf". */
   cv: null as string | null,
   about: [
-    "I'm Abdullah Abbasi, a full-stack developer focused on modern web applications and AI automation. I design and build products end to end, from the database and server logic to polished, animated interfaces.",
-    ph(
-      "Add 2-3 sentences about your background: how long you've been coding, what you've worked on, and what drives you.",
-    ),
-    "Right now I'm building Premium AI Website Studio, a SaaS platform that uses specialised AI agents to help developers create professional client websites.",
+    "I'm Muhammad Abdullah, an aspiring full-stack developer from Pakistan. I learn by building practical projects, and I'm growing my skills in web development, SaaS product development and AI automation.",
+    "I completed my Diploma in Information Technology (DIT) at SZABIST ZABTech iTVE Larkana. Since then I've been strengthening my foundations in C++, Java, C#, SQL and web development, and using AI-assisted development to plan and build faster.",
+    "My main project is Premium AI Website Studio, a SaaS platform I'm designing to help developers create professional client websites with specialised AI agents. It is currently in the planning and prototype stage.",
   ] as Text[],
   focus: [
-    { label: "Focus", value: "Full-stack web apps" },
-    { label: "Specialty", value: "AI automation" },
+    { label: "Focus", value: "Web & SaaS development" },
+    { label: "Interest", value: "AI automation" },
     { label: "Current project", value: "Premium AI Website Studio" },
   ],
 };
 
+/** Leave a value as null to hide that contact option. */
 export const contact = {
-  email: ph("you@example.com") as Text,
-  whatsapp: ph("+92 300 0000000") as Text,
-  /** Digits only, with country code, for the wa.me link. */
-  whatsappLink: null as string | null,
+  email: null as string | null,
+  /** Digits only, with country code, e.g. "923001234567". */
+  whatsapp: null as string | null,
   linkedin: null as string | null,
   github: "https://github.com/abdullahmuneerabbasi0-stack",
 };
 
 export type SkillGroup = { title: string; icon: string; skills: string[] };
 
-/** Confirm or edit this list: remove anything you don't use. */
+/** Only list what you have actually learned and used. */
 export const skillGroups: SkillGroup[] = [
   {
-    title: "Frontend",
-    icon: "Layout",
-    skills: ["React", "Next.js", "TypeScript", "JavaScript", "Tailwind CSS", "HTML & CSS", "Framer Motion"],
+    title: "Programming languages",
+    icon: "Code2",
+    skills: ["C++", "Java", "C#"],
   },
   {
-    title: "Backend",
-    icon: "Server",
-    skills: ["Node.js", "REST APIs", "Server Actions", "Authentication"],
+    title: "Web development",
+    icon: "Layout",
+    skills: ["Web development"],
   },
   {
     title: "Databases",
     icon: "Database",
-    skills: ["PostgreSQL", "Supabase", "Data modelling"],
+    skills: ["SQL", "Database fundamentals"],
   },
   {
-    title: "AI & Automation",
+    title: "AI",
     icon: "Bot",
-    skills: ["LLM APIs", "AI agents", "Prompt engineering", "Workflow automation", "Chatbots"],
+    skills: ["AI-assisted development"],
   },
-  {
-    title: "Tools & DevOps",
-    icon: "Wrench",
-    skills: ["Git & GitHub", "Vercel", "VS Code", "Figma"],
-  },
+];
+
+/** Areas you are working towards, shown separately from skills. */
+export const interests: string[] = [
+  "Full-Stack Web Development",
+  "SaaS Product Development",
+  "AI Automation",
+  "Cybersecurity",
 ];
 
 export type Service = {
@@ -101,48 +102,52 @@ export type Service = {
 
 export const services: Service[] = [
   {
-    title: "Full-Stack Web Applications",
+    title: "Custom Website Development",
     icon: "Code2",
     description:
-      "Custom web apps built with Next.js and TypeScript, from database design to a polished, responsive interface.",
-    deliverables: ["Dashboards & SaaS products", "Secure authentication", "Database & API design"],
+      "Websites built around your specific needs, with a modern, responsive design that works on every device.",
+    deliverables: ["Tailored design and layout", "Mobile-friendly pages", "Clean, maintainable code"],
   },
   {
-    title: "AI Automation",
-    icon: "Workflow",
+    title: "Business Websites",
+    icon: "Layout",
     description:
-      "Automations that connect your tools and use AI to handle repetitive work, so your team can focus on what matters.",
-    deliverables: ["Workflow automation", "AI integrations", "Data processing pipelines"],
+      "A professional online presence for your business that clearly explains what you offer and how to reach you.",
+    deliverables: ["Service and contact pages", "Search-friendly basics", "Fast loading"],
   },
   {
-    title: "Premium Websites",
+    title: "SaaS Development",
     icon: "Sparkles",
     description:
-      "Fast, modern websites with premium design and smooth animation that make a strong first impression.",
-    deliverables: ["Responsive design", "SEO fundamentals", "Performance optimisation"],
+      "Help turning a software idea into a web-based product, from planning the features to building the first version.",
+    deliverables: ["Feature planning", "User dashboards", "Database design"],
   },
   {
-    title: "AI Chatbots",
-    icon: "MessageSquare",
+    title: "AI Automation Solutions",
+    icon: "Workflow",
     description:
-      "Website chatbots that answer questions from your own content, available to your visitors around the clock.",
-    deliverables: ["Custom knowledge base", "Website integration", "Brand-matched design"],
+      "Using AI tools to automate repetitive tasks and simplify everyday business workflows.",
+    deliverables: ["Workflow review", "AI-assisted automations", "Practical, simple setup"],
   },
 ];
 
 export type EducationItem = {
   qualification: Text;
-  institution: Text;
-  period: Text;
+  institution?: Text;
+  period?: Text;
   details?: Text;
 };
 
 export const education: EducationItem[] = [
   {
-    qualification: ph("Degree or qualification"),
-    institution: ph("Institution name"),
-    period: ph("2020 - 2024"),
-    details: ph("Optional: focus area, grade or highlights"),
+    qualification: "Diploma in Information Technology (DIT)",
+    institution: "SZABIST ZABTech iTVE Larkana",
+    period: "Completed",
+    details: "Physical certificate pending.",
+  },
+  {
+    qualification: "Matriculation",
+    period: "Completed",
   },
 ];
 

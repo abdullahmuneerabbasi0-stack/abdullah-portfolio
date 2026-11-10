@@ -20,15 +20,19 @@ export function Education() {
                     <div className="flex items-start gap-4">
                       <GraduationCap className="mt-1 h-6 w-6 shrink-0 text-accent-2" aria-hidden="true" />
                       <div>
-                        <p className="font-mono text-xs uppercase tracking-widest text-accent-3">
-                          <T value={e.period} />
-                        </p>
+                        {e.period && (
+                          <p className="font-mono text-xs uppercase tracking-widest text-accent-3">
+                            <T value={e.period} />
+                          </p>
+                        )}
                         <h3 className="mt-2 font-display text-xl font-semibold">
                           <T value={e.qualification} />
                         </h3>
-                        <p className="mt-1 text-muted">
-                          <T value={e.institution} />
-                        </p>
+                        {e.institution && (
+                          <p className="mt-1 text-muted">
+                            <T value={e.institution} />
+                          </p>
+                        )}
                         {e.details && (
                           <p className="mt-3 text-sm text-muted">
                             <T value={e.details} />

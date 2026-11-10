@@ -48,7 +48,7 @@ export const projects: Project[] = [
     summary:
       "A SaaS platform that guides a client website from structured requirements discovery to AI-assisted generation, customisation and management, using a team of specialised AI agents.",
     status: "In development",
-    statusDetail: "Planning & architecture stage",
+    statusDetail: "Planning & prototype stage",
     flagship: true,
     category: "SaaS · AI",
     technologies: ["Next.js", "React", "TypeScript", "Tailwind CSS", "PostgreSQL", "AI agents", "Multi-tenant architecture"],
@@ -158,10 +158,11 @@ export const projects: Project[] = [
         "Early prototypes and client-separation testing",
       ],
       next: [
+        "Continue prototype development",
         "Build the core platform and client dashboards",
         "Implement the requirements discovery flow",
         "Develop and integrate the first AI agents",
-        "Private testing before any public release",
+        "Private testing before any commercial launch",
       ],
     },
   },

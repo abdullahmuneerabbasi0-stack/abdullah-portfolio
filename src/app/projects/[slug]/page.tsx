@@ -101,7 +101,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
           <div className="rounded-2xl border border-accent-3/30 bg-accent-3/[0.06] p-5 text-sm leading-relaxed text-text/90 sm:p-6">
             <strong className="text-accent-3">Project status:</strong> {p.title} is an ongoing independent project
             {p.statusDetail ? ` currently in the ${p.statusDetail.toLowerCase()}` : ""}. The features below describe the
-            planned platform; it has not yet been released or deployed to production.
+            planned platform; it has not yet been commercially launched.
           </div>
         </Reveal>
 

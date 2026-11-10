@@ -1,4 +1,5 @@
-import { skillGroups } from "@/content/site";
+import { Target } from "lucide-react";
+import { interests, skillGroups } from "@/content/site";
 import { Icon } from "@/components/ui/Icon";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -10,12 +11,12 @@ export function Skills() {
       <div className="mx-auto max-w-6xl">
         <SectionHeading
           eyebrow="Technical skills"
-          title="The tools I build with"
-          intro="A modern, type-safe stack for fast, reliable products, plus the AI tooling to automate the hard parts."
+          title="What I'm learning and using"
+          intro="The languages and technologies I have studied and practise with, and the areas I'm growing into."
         />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {skillGroups.map((g, i) => (
-            <Reveal key={g.title} delay={(i % 3) * 0.08} className={i === 0 ? "lg:col-span-2" : undefined}>
+            <Reveal key={g.title} delay={(i % 4) * 0.08}>
               <Spotlight className="h-full p-6">
                 <div className="mb-5 flex items-center gap-3">
                   <span className="grid h-10 w-10 place-items-center rounded-xl bg-accent/10 text-accent-2">
@@ -37,6 +38,23 @@ export function Skills() {
             </Reveal>
           ))}
         </div>
+        <Reveal delay={0.1} className="mt-4">
+          <Spotlight className="flex flex-col gap-5 p-6 sm:flex-row sm:items-center">
+            <div className="flex shrink-0 items-center gap-3">
+              <span className="grid h-10 w-10 place-items-center rounded-xl bg-accent/10 text-accent-2">
+                <Target className="h-5 w-5" aria-hidden="true" />
+              </span>
+              <h3 className="font-display text-lg font-semibold">Professional interests</h3>
+            </div>
+            <ul className="flex flex-wrap gap-2 sm:ml-auto">
+              {interests.map((s) => (
+                <li key={s} className="rounded-full border border-accent-2/30 bg-accent/[0.06] px-3.5 py-1.5 text-sm text-accent-3">
+                  {s}
+                </li>
+              ))}
+            </ul>
+          </Spotlight>
+        </Reveal>
       </div>
     </section>
   );

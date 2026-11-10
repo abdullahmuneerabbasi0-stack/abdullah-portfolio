@@ -12,7 +12,7 @@ const display = Space_Grotesk({ variable: "--font-display", subsets: ["latin"], 
 const mono = JetBrains_Mono({ variable: "--font-mono", subsets: ["latin"], display: "swap" });
 
 const title = `${profile.name} | ${profile.roles.join(" & ")}`;
-const description = `${profile.name} is a ${profile.roles.join(" and ")} building premium web applications and AI-powered automations.`;
+const description = `${profile.name} is an aspiring ${profile.roles.join(" and ")} from Pakistan, building practical web, SaaS and AI automation projects.`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -25,9 +25,8 @@ export const metadata: Metadata = {
     profile.name,
     "Full-Stack Developer",
     "AI Automation Specialist",
-    "Next.js developer",
-    "React developer",
-    "TypeScript",
+    "Web developer Pakistan",
+    "SaaS development",
     "AI automation",
     "Premium AI Website Studio",
   ],
@@ -56,7 +55,8 @@ const personJsonLd = {
   jobTitle: profile.roles.join(" & "),
   url: siteUrl,
   sameAs: [contact.github, contact.linkedin].filter(Boolean),
-  knowsAbout: ["Full-stack web development", "Next.js", "React", "TypeScript", "AI automation"],
+  knowsAbout: ["Web development", "C++", "Java", "C#", "SQL", "AI-assisted development"],
+  address: { "@type": "PostalAddress", addressCountry: "PK" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
