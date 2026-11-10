@@ -37,7 +37,7 @@ export const profile = {
   /** Put the photo at public/profile.jpg and set this to "/profile.jpg". */
   photo: "/profile.jpg" as string | null,
   /** Put the CV at public/cv.pdf and set this to "/cv.pdf". */
-  cv: null as string | null,
+  cv: "/Muhammad_Abdullah_Resume.pdf" as string | null,
   about: [
     "I'm Muhammad Abdullah, an aspiring full-stack developer from Pakistan. I learn by building practical projects, and I'm growing my skills in web development, SaaS product development and AI automation.",
     "I completed my Diploma in Information Technology (DIT) at SZABIST ZABTech iTVE Larkana. Since then I've been strengthening my foundations in C++, Java, C#, SQL and web development, and using AI-assisted development to plan and build faster.",
