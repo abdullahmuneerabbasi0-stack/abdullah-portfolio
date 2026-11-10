@@ -1,136 +1,84 @@
 @import "tailwindcss";
 
 /*
- * Design tokens. These CSS variables drive the whole look and will later be
+ * Design tokens. Three colours only: ink (background), paper (text) and one
+ * signal colour for links, status and the main action on each screen.
+ * Everything else is paper at a lower opacity. These variables will later be
  * editable from the admin theme studio.
  */
 :root {
-  --bg: #0a0a0b;
-  --surface: #141416;
-  --surface-2: #1c1c1f;
-  --text: #f5f5f4;
-  --muted: #a1a1aa;
-  --accent: #ff4d2e;
-  --accent-2: #ff7a1a;
-  --accent-3: #ffb020;
-  --glass: rgb(255 255 255 / 0.045);
-  --glass-strong: rgb(255 255 255 / 0.07);
-  --glass-border: rgb(255 255 255 / 0.1);
+  --ink: #121110;
+  --paper: #ece6da;
+  --signal: #ff5a36;
+  --muted: rgb(236 230 218 / 0.62);
+  --line: rgb(236 230 218 / 0.14);
 }
 
 @theme inline {
-  --color-bg: var(--bg);
-  --color-surface: var(--surface);
-  --color-surface-2: var(--surface-2);
-  --color-text: var(--text);
+  --color-bg: var(--ink);
+  --color-text: var(--paper);
   --color-muted: var(--muted);
-  --color-accent: var(--accent);
-  --color-accent-2: var(--accent-2);
-  --color-accent-3: var(--accent-3);
-  --font-sans: var(--font-inter);
-  --font-display: var(--font-display);
+  --color-line: var(--line);
+  --color-accent: var(--signal);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-body);
   --font-mono: var(--font-mono);
 }
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
+  scroll-padding-top: 4.5rem;
   color-scheme: dark;
 }
 
 body {
-  background: var(--bg);
-  color: var(--text);
+  background: var(--ink);
+  color: var(--paper);
+  font-feature-settings: "ss01";
 }
 
 ::selection {
-  background: rgb(255 77 46 / 0.35);
-  color: #fff;
+  background: var(--signal);
+  color: var(--ink);
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent-3);
+  outline: 2px solid var(--signal);
   outline-offset: 3px;
-  border-radius: 6px;
 }
 
 @layer components {
-  .glass {
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    backdrop-filter: blur(16px) saturate(140%);
-    -webkit-backdrop-filter: blur(16px) saturate(140%);
+  /* Underlined text link in the signal colour. */
+  .link {
+    color: var(--paper);
+    text-decoration: underline;
+    text-decoration-color: var(--signal);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+    transition: color 0.15s ease;
+  }
+  .link:hover {
+    color: var(--signal);
   }
 
-  .text-gradient {
-    background: linear-gradient(100deg, var(--accent) 0%, var(--accent-2) 45%, var(--accent-3) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-
-  .bg-accent-gradient {
-    background: linear-gradient(100deg, var(--accent) 0%, var(--accent-2) 60%, var(--accent-3) 120%);
-  }
-
-  /* Card with a soft glow that follows the cursor (see Spotlight component). */
-  .spotlight {
-    position: relative;
-    isolation: isolate;
-  }
-  .spotlight::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    z-index: -1;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    background: radial-gradient(
-      420px circle at var(--mx, 50%) var(--my, 50%),
-      rgb(255 122 26 / 0.14),
-      transparent 45%
-    );
-  }
-  .spotlight:hover::before {
-    opacity: 1;
-  }
-
-  .grid-bg {
-    background-image:
-      linear-gradient(rgb(255 255 255 / 0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(255 255 255 / 0.035) 1px, transparent 1px);
-    background-size: 64px 64px;
-    mask-image: radial-gradient(ellipse at 50% 0%, black 20%, transparent 70%);
+  /* Small monospace label used for dates, statuses and tech names. */
+  .label {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
   }
 
   .placeholder {
-    outline: 1.5px dashed var(--accent-3);
+    outline: 1.5px dashed var(--signal);
     outline-offset: 2px;
-    border-radius: 4px;
-    color: var(--accent-3);
+    color: var(--signal);
   }
-}
-
-@keyframes float-slow {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(3%, -4%, 0) scale(1.08);
-  }
-}
-
-.animate-float-slow {
-  animation: float-slow 14s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
-  }
-  .animate-float-slow {
-    animation: none;
   }
 }

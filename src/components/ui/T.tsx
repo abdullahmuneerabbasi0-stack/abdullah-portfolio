@@ -7,7 +7,7 @@ import type { Text } from "@/content/site";
 export function T({ value }: { value: Text }) {
   if (typeof value === "string") return <>{value}</>;
   return (
-    <span className="placeholder px-1" title="Placeholder: replace before sharing">
+    <span className="placeholder px-1 font-mono text-[0.85em]" title="Placeholder: replace before sharing">
       [{value.placeholder}]
     </span>
   );

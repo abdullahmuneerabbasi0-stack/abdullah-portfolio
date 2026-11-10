@@ -3,25 +3,23 @@
 import { motion } from "motion/react";
 import type { ReactNode } from "react";
 
-/** Fades and slides content in as it scrolls into view. */
+/** A short fade-in as content scrolls into view. */
 export function Reveal({
   children,
   delay = 0,
-  y = 24,
   className,
 }: {
   children: ReactNode;
   delay?: number;
-  y?: number;
   className?: string;
 }) {
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y }}
+      initial={{ opacity: 0, y: 12 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.45, delay, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
     </motion.div>

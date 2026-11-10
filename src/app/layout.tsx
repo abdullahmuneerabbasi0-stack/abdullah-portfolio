@@ -1,18 +1,18 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import { Bricolage_Grotesque, IBM_Plex_Mono } from "next/font/google";
 import { contact, profile, siteUrl } from "@/content/site";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { MotionProvider } from "@/components/layout/MotionProvider";
-import { Background } from "@/components/ui/Background";
 import "./globals.css";
 
-const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "swap" });
-const display = Space_Grotesk({ variable: "--font-display", subsets: ["latin"], display: "swap" });
-const mono = JetBrains_Mono({ variable: "--font-mono", subsets: ["latin"], display: "swap" });
+// Bricolage Grotesque for all reading text, IBM Plex Mono only for data
+// (dates, statuses, stack names). See globals.css for the colour tokens.
+const body = Bricolage_Grotesque({ variable: "--font-body", subsets: ["latin"], display: "swap" });
+const mono = IBM_Plex_Mono({ variable: "--font-mono", subsets: ["latin"], weight: ["400", "500"], display: "swap" });
 
 const title = `${profile.name} | ${profile.roles.join(" & ")}`;
-const description = `${profile.name} is a junior full-stack web developer from Karachi, Pakistan, building with React, Next.js, TypeScript and Node.js. Open to internships and junior roles.`;
+const description = profile.summary;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0a0a0b",
+  themeColor: "#121110",
   colorScheme: "dark",
 };
 
@@ -60,11 +60,11 @@ const personJsonLd = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${inter.variable} ${display.variable} ${mono.variable} antialiased`}>
+    <html lang="en" className={`${body.variable} ${mono.variable} antialiased`}>
       <body className="min-h-dvh font-sans">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-lg focus:bg-accent focus:px-4 focus:py-2 focus:font-semibold focus:text-black"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:bg-accent focus:px-4 focus:py-2 focus:font-semibold focus:text-black"
         >
           Skip to content
         </a>
@@ -73,7 +73,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c") }}
         />
         <MotionProvider>
-          <Background />
           <Navbar />
           <main id="main">{children}</main>
           <Footer />

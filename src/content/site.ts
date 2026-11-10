@@ -30,8 +30,14 @@ export const profile = {
   shortName: "Abdullah",
   initials: "MA",
   roles: ["Junior Full-Stack Web Developer"],
-  headline:
-    "I build with JavaScript, TypeScript, React, Next.js and Node.js, and use AI-assisted development to plan and ship features quickly.",
+  /** The hero sentence. Say what you do and what you want, in plain words. */
+  headline: "I'm Abdullah. I build web apps with Next.js and Node.js, and I'm looking for my first developer job.",
+  /** Short line under the hero sentence. Real numbers only. */
+  intro:
+    "This site is the first thing I've shipped: the first version was live in 1 day and finished in 5. Right now I'm building TaskFloe AI, a task manager with a Node.js back end and Supabase.",
+  /** Used in search results and link previews. */
+  summary:
+    "Junior full-stack web developer in Karachi, Pakistan. React, Next.js, TypeScript and Node.js. Open to internships and junior roles.",
   location: "Karachi, Sindh, Pakistan" as Text,
   availability: "Open to internships and junior roles, on-site or remote",
   /** Put the photo at public/profile.jpg and set this to "/profile.jpg". */
@@ -39,16 +45,26 @@ export const profile = {
   /** Put the CV in public/ and set this to its path. */
   cv: "/Muhammad_Abdullah_Resume.pdf" as string | null,
   about: [
-    "I'm Muhammad Abdullah, a junior full-stack web developer from Karachi, Pakistan, working with JavaScript, TypeScript, React, Next.js, Node.js and Supabase (PostgreSQL).",
-    "I built and deployed this portfolio with Next.js on Vercel in 5 days, and I'm currently building TaskFloe AI, a full-stack task manager. I use AI-assisted development (Claude Code) to plan and ship features quickly.",
-    "I hold a Diploma in Information Technology (DIT) from SZABIST ZABTech iTVE Larkana. I'm open to internships and junior roles, on-site or remote.",
+    "I have a Diploma in Information Technology (DIT) from SZABIST ZABTech iTVE Larkana. The printed certificate is still on its way.",
+    "I haven't worked as a developer yet, so everything on this site is my own project work. I'm looking for an internship or a junior role, on-site in Karachi or remote.",
+    "Most of what I write is TypeScript and JavaScript: React and Next.js on the front end, Node.js and Supabase on the back end. I use Claude Code, an AI coding assistant, to help me plan and write features.",
+    ph("PLACEHOLDER: one sentence, in your own words, on the kind of team or product you want to work on"),
   ] as Text[],
-  focus: [
-    { label: "Open to", value: "Internships & junior roles" },
-    { label: "Building", value: "TaskFloe AI" },
-    { label: "Languages", value: "Urdu, English" },
+  facts: [
+    { label: "Education", value: "DIT, SZABIST ZABTech iTVE Larkana. SSC (Matric)." },
+    { label: "Languages", value: "Urdu (native), English (basic working proficiency)" },
+    { label: "Based in", value: "Karachi, Sindh, Pakistan" },
   ],
 };
+
+/** Small website jobs, shown as one line in Contact. */
+export const freelance: Text[] = [
+  "I also take small website jobs, like a site for a local business built the same way as this one.",
+  ph("PLACEHOLDER: your price range or how you quote, and how long a typical site takes"),
+];
+
+/** Shown under the email address in Contact. */
+export const replyNote: Text = ph("PLACEHOLDER: how quickly you usually reply, e.g. 'I reply within a day'");
 
 /** Leave a value as null to hide that contact option. */
 export const contact = {
@@ -63,104 +79,38 @@ export const contact = {
   instagram: "https://www.instagram.com/blackpantherwxf" as string | null,
 };
 
-export type SkillGroup = { title: string; icon: string; skills: string[] };
+export type SkillGroup = { title: string; skills: string[]; usedIn: string };
 
-/** Only list what you have actually learned and used. */
+/** Only list what you have actually learned and used, and say where. */
 export const skillGroups: SkillGroup[] = [
   {
     title: "Languages",
-    icon: "Code2",
-    skills: ["JavaScript (ES6+)", "TypeScript", "HTML5", "CSS3"],
+    skills: ["TypeScript", "JavaScript (ES6+)", "HTML5", "CSS3"],
+    usedIn: "TypeScript on this site, JavaScript in TaskFloe AI",
   },
   {
-    title: "Frontend",
-    icon: "Layout",
+    title: "Front end",
     skills: ["React", "Next.js (App Router)", "Tailwind CSS", "Responsive design"],
+    usedIn: "This site",
   },
   {
-    title: "Backend & Data",
-    icon: "Database",
+    title: "Back end and data",
     skills: ["Node.js", "Supabase (PostgreSQL)", "API integration"],
+    usedIn: "TaskFloe AI",
   },
   {
     title: "Tools",
-    icon: "Wrench",
     skills: ["Git", "GitHub", "Vercel", "VS Code", "Claude Code"],
+    usedIn: "This site deploys to Vercel on every push to GitHub",
   },
   {
     title: "Familiar with",
-    icon: "Sparkles",
     skills: ["Python", "MySQL"],
-  },
-];
-
-/** Areas you are working towards, shown separately from skills. */
-export const interests: string[] = [
-  "Full-Stack Web Development",
-  "SaaS Product Development",
-  "AI Automation",
-  "Cybersecurity",
-];
-
-export type Service = {
-  title: string;
-  icon: string;
-  description: string;
-  deliverables: string[];
-};
-
-export const services: Service[] = [
-  {
-    title: "Custom Website Development",
-    icon: "Code2",
-    description:
-      "Websites built around your specific needs, with a modern, responsive design that works on every device.",
-    deliverables: ["Tailored design and layout", "Mobile-friendly pages", "Clean, maintainable code"],
-  },
-  {
-    title: "Business Websites",
-    icon: "Layout",
-    description:
-      "A professional online presence for your business that clearly explains what you offer and how to reach you.",
-    deliverables: ["Service and contact pages", "Search-friendly basics", "Fast loading"],
-  },
-  {
-    title: "SaaS Development",
-    icon: "Sparkles",
-    description:
-      "Help turning a software idea into a web-based product, from planning the features to building the first version.",
-    deliverables: ["Feature planning", "User dashboards", "Database design"],
-  },
-  {
-    title: "AI Automation Solutions",
-    icon: "Workflow",
-    description:
-      "Using AI tools to automate repetitive tasks and simplify everyday business workflows.",
-    deliverables: ["Workflow review", "AI-assisted automations", "Practical, simple setup"],
-  },
-];
-
-export type EducationItem = {
-  qualification: Text;
-  institution?: Text;
-  period?: Text;
-  details?: Text;
-};
-
-export const education: EducationItem[] = [
-  {
-    qualification: "Diploma in Information Technology (DIT)",
-    institution: "SZABIST ZABTech iTVE Larkana",
-    period: "Completed",
-    details: "Physical certificate pending.",
-  },
-  {
-    qualification: "Secondary School Certificate (SSC / Matric)",
-    period: "Completed",
+    usedIn: "Not used in a project yet",
   },
 ];
 
 export type Certification = { name: string; issuer: string; year: string; url?: string };
 
-/** Leave empty to hide the certifications block. */
+/** Shown in About when not empty. Add your DIT certificate here once you have it. */
 export const certifications: Certification[] = [];

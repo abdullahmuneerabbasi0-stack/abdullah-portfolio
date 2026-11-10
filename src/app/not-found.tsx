@@ -2,13 +2,13 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <section className="grid min-h-[80dvh] place-items-center px-6 pt-24 text-center">
-      <div>
-        <p className="text-gradient font-display text-8xl font-bold">404</p>
-        <h1 className="mt-4 font-display text-2xl font-semibold">This page doesn&apos;t exist</h1>
-        <p className="mt-2 text-muted">The link may be broken or the page may have moved.</p>
-        <Link href="/" className="bg-accent-gradient mt-8 inline-block rounded-xl px-6 py-3 font-semibold text-black">
-          Back to home
+    <section className="px-5 pt-36 pb-24 sm:px-8">
+      <div className="mx-auto max-w-6xl">
+        <p className="label text-accent">404</p>
+        <h1 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">There&apos;s no page at this address.</h1>
+        <p className="mt-4 text-lg text-muted">The link may be mistyped, or the page was moved.</p>
+        <Link href="/" className="link mt-8 inline-block font-medium">
+          Go to the home page
         </Link>
       </div>
     </section>

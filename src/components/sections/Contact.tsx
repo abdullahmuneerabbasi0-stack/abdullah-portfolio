@@ -1,103 +1,64 @@
 import type { ReactNode } from "react";
-import { ArrowUpRight, Download, Mail, Phone } from "lucide-react";
-import { contact, profile } from "@/content/site";
-import { FacebookIcon, GithubIcon, InstagramIcon, LinkedinIcon, WhatsappIcon } from "@/components/ui/BrandIcons";
+import { contact, freelance, profile, replyNote } from "@/content/site";
+import { T } from "@/components/ui/T";
 import { Reveal } from "@/components/ui/Reveal";
-import { Spotlight } from "@/components/ui/Spotlight";
+import { Section } from "@/components/ui/Section";
 
-type Channel = { label: string; value: ReactNode; href: string; icon: ReactNode; external?: boolean };
+type Row = { label: string; value: ReactNode; href: string; external?: boolean; download?: boolean };
 
 export function Contact() {
-  const all: (Channel | null)[] = [
-    contact.email
-      ? { label: "Email", value: contact.email, href: `mailto:${contact.email}`, icon: <Mail className="h-5 w-5" /> }
-      : null,
-    contact.phone
-      ? {
-          label: "Phone",
-          value: contact.phone,
-          href: `tel:+${contact.phone.replace(/\D/g, "")}`,
-          icon: <Phone className="h-5 w-5" />,
-        }
-      : null,
-    contact.whatsapp
-      ? {
-          label: "WhatsApp",
-          value: "Chat on WhatsApp",
-          href: `https://wa.me/${contact.whatsapp}`,
-          icon: <WhatsappIcon className="h-5 w-5" />,
-          external: true,
-        }
-      : null,
-    contact.linkedin
-      ? { label: "LinkedIn", value: "Connect with me", href: contact.linkedin, icon: <LinkedinIcon className="h-5 w-5" />, external: true }
-      : null,
-    { label: "GitHub", value: "See my code", href: contact.github, icon: <GithubIcon className="h-5 w-5" />, external: true },
-    contact.facebook
-      ? { label: "Facebook", value: "Follow me", href: contact.facebook, icon: <FacebookIcon className="h-5 w-5" />, external: true }
-      : null,
-    contact.instagram
-      ? { label: "Instagram", value: "Follow me", href: contact.instagram, icon: <InstagramIcon className="h-5 w-5" />, external: true }
-      : null,
-  ];
-  const channels = all.filter((c): c is Channel => c !== null);
+  const rows: Row[] = [
+    contact.phone && { label: "Phone", value: contact.phone, href: `tel:+${contact.phone.replace(/\D/g, "")}` },
+    contact.whatsapp && { label: "WhatsApp", value: `+${contact.whatsapp}`, href: `https://wa.me/${contact.whatsapp}`, external: true },
+    contact.linkedin && { label: "LinkedIn", value: contact.linkedin.replace(/^https:\/\/(www\.)?/, ""), href: contact.linkedin, external: true },
+    { label: "GitHub", value: contact.github.replace("https://github.com/", ""), href: contact.github, external: true },
+    profile.cv && { label: "CV", value: "Download as PDF", href: profile.cv, download: true },
+  ].filter(Boolean) as Row[];
 
   return (
-    <section id="contact" className="px-6 py-24 md:py-32">
-      <div className="mx-auto max-w-6xl">
-        <Reveal>
-          <div className="glass relative overflow-hidden rounded-3xl p-6 sm:p-12 lg:p-16">
-            <div aria-hidden="true" className="bg-accent-gradient absolute -top-32 -right-32 h-80 w-80 rounded-full opacity-20 blur-3xl" />
-            <p className="mb-3 font-mono text-xs uppercase tracking-[0.25em] text-accent-2">Contact</p>
-            <h2 className="max-w-2xl font-display text-4xl font-bold tracking-tight sm:text-5xl">
-              Let&apos;s build something <span className="text-gradient">remarkable</span>.
-            </h2>
-            <p className="mt-4 max-w-xl text-lg text-muted">
-              Have a project, an opportunity or an idea? Reach out below and I&apos;ll get back to you.
-            </p>
+    <Section id="contact" number="04" label="Contact">
+      <Reveal>
+        <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Hiring an intern or junior developer in Karachi, or remotely? Email me.</h2>
+        {contact.email && (
+          <a
+            href={`mailto:${contact.email}`}
+            className="link mt-6 inline-block text-xl font-medium [overflow-wrap:anywhere] sm:text-3xl"
+          >
+            {contact.email}
+          </a>
+        )}
+        <p className="mt-5 max-w-[60ch] text-lg leading-relaxed text-muted">
+          I&apos;m looking for an internship or a junior developer role, on-site in Karachi or remote.{" "}
+          <T value={replyNote} />
+        </p>
 
-            <ul className="mt-10 grid gap-4 sm:grid-cols-2">
-              {channels.map((c) => {
-                const inner = (
-                  <>
-                    <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-accent/10 text-accent-2">{c.icon}</span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block text-sm text-muted">{c.label}</span>
-                      <span className="block font-medium break-words [overflow-wrap:anywhere]">{c.value}</span>
-                    </span>
-                    {<ArrowUpRight className="h-5 w-5 text-muted transition group-hover:text-accent-3" />}
-                  </>
-                );
-                return (
-                  <li key={c.label} className="min-w-0">
-                    {(
-                      <Spotlight className="transition-transform hover:-translate-y-0.5">
-                        <a
-                          href={c.href}
-                          {...(c.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                          className="group flex items-center gap-4 p-5"
-                        >
-                          {inner}
-                        </a>
-                      </Spotlight>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
+        <dl className="mt-10 grid border-t border-line">
+          {rows.map((r) => (
+            <div key={r.label} className="grid gap-1 border-b border-line py-3 sm:grid-cols-[9rem_1fr] sm:gap-6">
+              <dt className="label">{r.label}</dt>
+              <dd>
+                <a
+                  href={r.href}
+                  {...(r.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                  {...(r.download ? { download: true } : {})}
+                  className="link [overflow-wrap:anywhere]"
+                >
+                  {r.value}
+                </a>
+              </dd>
+            </div>
+          ))}
+        </dl>
 
-            {profile.cv && (
-              <a
-                href={profile.cv}
-                download
-                className="bg-accent-gradient mt-8 inline-flex items-center gap-2 rounded-xl px-6 py-3.5 font-semibold text-black hover:brightness-110"
-              >
-                <Download className="h-4 w-4" /> Download my CV
-              </a>
-            )}
-          </div>
-        </Reveal>
-      </div>
-    </section>
+        <p className="mt-10 max-w-[60ch] leading-relaxed text-muted">
+          {freelance.map((f, i) => (
+            <span key={i}>
+              {i > 0 && " "}
+              <T value={f} />
+            </span>
+          ))}
+        </p>
+      </Reveal>
+    </Section>
   );
 }
