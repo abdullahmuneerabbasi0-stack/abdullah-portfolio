@@ -35,7 +35,7 @@ export const profile = {
   location: "Pakistan" as Text,
   availability: "Open to projects and opportunities",
   /** Put the photo at public/profile.jpg and set this to "/profile.jpg". */
-  photo: null as string | null,
+  photo: "/profile.jpg" as string | null,
   /** Put the CV at public/cv.pdf and set this to "/cv.pdf". */
   cv: null as string | null,
   about: [
