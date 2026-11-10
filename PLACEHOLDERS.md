@@ -15,4 +15,4 @@ Placeholders show on the site with a dashed amber outline. Edit the files below.
 | Contact: email | `src/content/site.ts` → `contact.email` | Email to show publicly |
 | Contact: WhatsApp | `contact.whatsapp` and `contact.whatsappLink` (digits only, e.g. `923001234567`) | Number |
 | Contact: LinkedIn | `contact.linkedin` | Full profile URL |
-| Site address for SEO | Vercel env var `NEXT_PUBLIC_SITE_URL` | Final URL, e.g. `https://abdullah-abbasi.vercel.app` |
+| Site address for SEO | Automatic on Vercel; set env var `NEXT_PUBLIC_SITE_URL` only if you add a custom domain | e.g. `https://yourname.dev` |

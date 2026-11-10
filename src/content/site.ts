@@ -14,8 +14,16 @@ export type Text = string | { placeholder: string };
 /** Mark a piece of text as a placeholder that still needs real content. */
 export const ph = (placeholder: string): Text => ({ placeholder });
 
+/**
+ * The site's public address, used for SEO and link previews.
+ * Set NEXT_PUBLIC_SITE_URL in Vercel when you add a custom domain; until then
+ * Vercel's own production URL is picked up automatically at build time.
+ */
 export const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://abdullah-abbasi.vercel.app";
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "http://localhost:3000");
 
 export const profile = {
   name: "Abdullah Abbasi",
