@@ -91,20 +91,63 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
           </Reveal>
           <Reveal delay={0.15}>
             <div className="glass relative h-96 overflow-hidden rounded-3xl">
-              <ProjectVisual />
+              {p.visual === "studio" ? (
+                <ProjectVisual />
+              ) : (
+                <div className="absolute inset-0 flex flex-col justify-end bg-[radial-gradient(circle_at_70%_20%,rgb(255_77_46/0.3),transparent_60%),radial-gradient(circle_at_10%_90%,rgb(255_176_32/0.18),transparent_55%)] p-8">
+                  <p className="font-mono text-xs uppercase tracking-widest text-muted">{p.category}</p>
+                  <p className="mt-2 font-display text-3xl font-bold">{p.title}</p>
+                  <ul className="mt-5 flex flex-wrap gap-2">
+                    {p.technologies.map((t) => (
+                      <li key={t} className="rounded-lg border border-white/15 bg-black/40 px-2.5 py-1 font-mono text-[11px] text-accent-3">
+                        {t}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </Reveal>
         </header>
 
         {/* Honest status note */}
+        {p.status !== "Live" && (
         <Reveal className="mt-12">
           <div className="rounded-2xl border border-accent-3/30 bg-accent-3/[0.06] p-5 text-sm leading-relaxed text-text/90 sm:p-6">
             <strong className="text-accent-3">Project status:</strong> {p.title} is an ongoing independent project
-            {p.statusDetail ? ` currently in the ${p.statusDetail.toLowerCase()}` : ""}. The features below describe the
-            planned platform; it has not yet been commercially launched.
+            {p.statusDetail ? ` currently in the ${p.statusDetail.toLowerCase()}` : " currently in development"}. It has not yet
+            been released{p.features ? "; the features below describe the planned platform" : ""}.
           </div>
         </Reveal>
+        )}
 
+        {p.highlights && (
+          <Block eyebrow="Highlights" title={p.status === "Live" ? "What I built" : "What I'm building"}>
+            <Reveal>
+              <ul className="space-y-4">
+                {p.highlights.map((h) => (
+                  <li key={h} className="flex gap-3 text-lg leading-relaxed text-text/90">
+                    <CheckCircle2 className="mt-1 h-5 w-5 shrink-0 text-accent-3" aria-hidden="true" /> {h}
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+            {!p.architecture && (
+              <Reveal className="mt-10">
+                <p className="mb-3 text-sm text-muted">Technologies</p>
+                <ul className="flex flex-wrap gap-2">
+                  {p.technologies.map((t) => (
+                    <li key={t} className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-1.5 font-mono text-xs">
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              </Reveal>
+            )}
+          </Block>
+        )}
+
+        {p.problem && p.vision && (
         <div className="grid gap-x-16 lg:grid-cols-2">
           <Block eyebrow="The problem" title="Why it matters">
             <Reveal className="space-y-4 text-lg leading-relaxed text-muted">
@@ -121,7 +164,9 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
             </Reveal>
           </Block>
         </div>
+        )}
 
+        {p.features && (
         <Block eyebrow="Planned capabilities" title="What the platform will do">
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {p.features.map((f, i) => (
@@ -151,6 +196,9 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
           </div>
         </Block>
 
+        )}
+
+        {p.architecture && (
         <Block eyebrow="Architecture" title="Key design decisions">
           <div className="grid gap-5 sm:grid-cols-2">
             {p.architecture.map((a, i) => (
@@ -175,6 +223,9 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
           </Reveal>
         </Block>
 
+        )}
+
+        {p.progress && (
         <Block eyebrow="Progress" title="Where it stands today">
           <div className="grid gap-5 md:grid-cols-2">
             <Reveal>
@@ -203,6 +254,8 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
             </Reveal>
           </div>
         </Block>
+
+        )}
 
         <Reveal>
           <div className="glass flex flex-col items-start justify-between gap-6 rounded-3xl p-8 sm:flex-row sm:items-center sm:p-10">

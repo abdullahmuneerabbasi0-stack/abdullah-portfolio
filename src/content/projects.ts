@@ -32,11 +32,15 @@ export type Project = {
   technologies: string[];
   liveUrl?: string;
   repoUrl?: string;
-  problem: string[];
-  vision: string[];
-  features: ProjectFeature[];
-  architecture: { title: string; description: string }[];
-  progress: { done: string[]; next: string[] };
+  /** "studio" shows the agent-workflow concept diagram; otherwise a title panel. */
+  visual?: "studio";
+  /** Short, factual bullets about what was built. */
+  highlights?: string[];
+  problem?: string[];
+  vision?: string[];
+  features?: ProjectFeature[];
+  architecture?: { title: string; description: string }[];
+  progress?: { done: string[]; next: string[] };
 };
 
 export const projects: Project[] = [
@@ -50,7 +54,8 @@ export const projects: Project[] = [
     status: "In development",
     statusDetail: "Planning & prototype stage",
     flagship: true,
-    category: "SaaS · AI",
+    visual: "studio",
+    category: "Multi-tenant AI SaaS concept",
     technologies: ["Next.js", "React", "TypeScript", "Tailwind CSS", "PostgreSQL", "AI agents", "Multi-tenant architecture"],
     problem: [
       "Building a premium website for a client is slow. Developers spend hours understanding requirements, planning structure, designing layouts, writing components and wiring up content management before any real customisation begins.",
@@ -167,5 +172,39 @@ export const projects: Project[] = [
     },
   },
 ];
+
+projects.push(
+  {
+    slug: "taskfloe-ai",
+    title: "TaskFloe AI",
+    tagline: "An AI-powered task management app for organising daily tasks.",
+    summary:
+      "A full-stack web app for organising daily tasks, with a responsive HTML, CSS and JavaScript interface, a Node.js back end and Supabase (PostgreSQL) for data storage.",
+    status: "In development",
+    category: "Full-stack web app",
+    technologies: ["HTML", "CSS", "JavaScript", "Node.js", "Supabase"],
+    highlights: [
+      "Developing a full-stack web app for organising daily tasks, with a responsive HTML, CSS and JavaScript interface and a Node.js back end.",
+      "Integrating Supabase (PostgreSQL) for data storage; user authentication, core task management features and AI integration are in progress.",
+    ],
+  },
+  {
+    slug: "developer-portfolio",
+    title: "Developer Portfolio Website",
+    tagline: "This website: a responsive, animated developer portfolio built with Next.js and deployed on Vercel.",
+    summary:
+      "A responsive portfolio with a dark glassmorphism design, built and deployed on Vercel in 5 days, with the first working version live in 1 day.",
+    status: "Live",
+    category: "Website",
+    technologies: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Motion", "Vercel", "Claude Code"],
+    liveUrl: "https://abdullah-portfolio-puce-rho.vercel.app",
+    repoUrl: "https://github.com/abdullahmuneerabbasi0-stack/abdullah-portfolio",
+    highlights: [
+      "Built and deployed a responsive portfolio on Vercel in 5 days (first working version in 1 day), with 7 page sections built from reusable React components.",
+      "Generated project case-study pages at /projects/[slug] from a single typed TypeScript content file using the Next.js App Router, so adding a project needs no new layout code.",
+      "Improved search and social sharing by adding an auto-generated sitemap, robots.txt, a dynamic Open Graph preview image and JSON-LD structured data.",
+    ],
+  },
+);
 
 export const getProject = (slug: string) => projects.find((p) => p.slug === slug);

@@ -10,13 +10,13 @@ export function Skills() {
     <section id="skills" className="px-6 py-24 md:py-32">
       <div className="mx-auto max-w-6xl">
         <SectionHeading
-          eyebrow="Technical skills"
-          title="What I'm learning and using"
-          intro="The languages and technologies I have studied and practise with, and the areas I'm growing into."
+          eyebrow="Skills"
+          title="Technical skills"
+          intro="The languages, frameworks and tools I build with."
         />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {skillGroups.map((g, i) => (
-            <Reveal key={g.title} delay={(i % 4) * 0.08}>
+            <Reveal key={g.title} delay={(i % 3) * 0.08}>
               <Spotlight className="h-full p-6">
                 <div className="mb-5 flex items-center gap-3">
                   <span className="grid h-10 w-10 place-items-center rounded-xl bg-accent/10 text-accent-2">

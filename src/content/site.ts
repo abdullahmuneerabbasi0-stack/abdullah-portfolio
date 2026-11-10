@@ -29,24 +29,24 @@ export const profile = {
   name: "Muhammad Abdullah",
   shortName: "Abdullah",
   initials: "MA",
-  roles: ["Full-Stack Developer", "AI Automation Specialist"],
+  roles: ["Junior Full-Stack Web Developer"],
   headline:
-    "An ambitious developer building practical digital products and solving business problems through web development, SaaS and AI automation.",
-  location: "Pakistan" as Text,
-  availability: "Open to projects and opportunities",
+    "I build with JavaScript, TypeScript, React, Next.js and Node.js, and use AI-assisted development to plan and ship features quickly.",
+  location: "Karachi, Sindh, Pakistan" as Text,
+  availability: "Open to internships and junior roles, on-site or remote",
   /** Put the photo at public/profile.jpg and set this to "/profile.jpg". */
   photo: "/profile.jpg" as string | null,
-  /** Put the CV at public/cv.pdf and set this to "/cv.pdf". */
+  /** Put the CV in public/ and set this to its path. */
   cv: "/Muhammad_Abdullah_Resume.pdf" as string | null,
   about: [
-    "I'm Muhammad Abdullah, an aspiring full-stack developer from Pakistan. I learn by building practical projects, and I'm growing my skills in web development, SaaS product development and AI automation.",
-    "I completed my Diploma in Information Technology (DIT) at SZABIST ZABTech iTVE Larkana. Since then I've been strengthening my foundations in C++, Java, C#, SQL and web development, and using AI-assisted development to plan and build faster.",
-    "My main project is Premium AI Website Studio, a SaaS platform I'm designing to help developers create professional client websites with specialised AI agents. It is currently in the planning and prototype stage.",
+    "I'm Muhammad Abdullah, a junior full-stack web developer from Karachi, Pakistan, working with JavaScript, TypeScript, React, Next.js, Node.js and Supabase (PostgreSQL).",
+    "I built and deployed this portfolio with Next.js on Vercel in 5 days, and I'm currently building TaskFloe AI, a full-stack task manager. I use AI-assisted development (Claude Code) to plan and ship features quickly.",
+    "I hold a Diploma in Information Technology (DIT) from SZABIST ZABTech iTVE Larkana. I'm open to internships and junior roles, on-site or remote.",
   ] as Text[],
   focus: [
-    { label: "Focus", value: "Web & SaaS development" },
-    { label: "Interest", value: "AI automation" },
-    { label: "Current project", value: "Premium AI Website Studio" },
+    { label: "Open to", value: "Internships & junior roles" },
+    { label: "Building", value: "TaskFloe AI" },
+    { label: "Languages", value: "Urdu, English" },
   ],
 };
 
@@ -68,24 +68,29 @@ export type SkillGroup = { title: string; icon: string; skills: string[] };
 /** Only list what you have actually learned and used. */
 export const skillGroups: SkillGroup[] = [
   {
-    title: "Programming languages",
+    title: "Languages",
     icon: "Code2",
-    skills: ["C++", "Java", "C#"],
+    skills: ["JavaScript (ES6+)", "TypeScript", "HTML5", "CSS3"],
   },
   {
-    title: "Web development",
+    title: "Frontend",
     icon: "Layout",
-    skills: ["Web development"],
+    skills: ["React", "Next.js (App Router)", "Tailwind CSS", "Responsive design"],
   },
   {
-    title: "Databases",
+    title: "Backend & Data",
     icon: "Database",
-    skills: ["SQL", "Database fundamentals"],
+    skills: ["Node.js", "Supabase (PostgreSQL)", "API integration"],
   },
   {
-    title: "AI",
-    icon: "Bot",
-    skills: ["AI-assisted development"],
+    title: "Tools",
+    icon: "Wrench",
+    skills: ["Git", "GitHub", "Vercel", "VS Code", "Claude Code"],
+  },
+  {
+    title: "Familiar with",
+    icon: "Sparkles",
+    skills: ["Python", "MySQL"],
   },
 ];
 
@@ -150,7 +155,7 @@ export const education: EducationItem[] = [
     details: "Physical certificate pending.",
   },
   {
-    qualification: "Matriculation",
+    qualification: "Secondary School Certificate (SSC / Matric)",
     period: "Completed",
   },
 ];

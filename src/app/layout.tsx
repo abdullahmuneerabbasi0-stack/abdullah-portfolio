@@ -12,7 +12,7 @@ const display = Space_Grotesk({ variable: "--font-display", subsets: ["latin"], 
 const mono = JetBrains_Mono({ variable: "--font-mono", subsets: ["latin"], display: "swap" });
 
 const title = `${profile.name} | ${profile.roles.join(" & ")}`;
-const description = `${profile.name} is an aspiring ${profile.roles.join(" and ")} from Pakistan, building practical web, SaaS and AI automation projects.`;
+const description = `${profile.name} is a junior full-stack web developer from Karachi, Pakistan, building with React, Next.js, TypeScript and Node.js. Open to internships and junior roles.`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -23,11 +23,10 @@ export const metadata: Metadata = {
   creator: profile.name,
   keywords: [
     profile.name,
-    "Full-Stack Developer",
-    "AI Automation Specialist",
-    "Web developer Pakistan",
-    "SaaS development",
-    "AI automation",
+    "Junior Full-Stack Web Developer",
+    "Next.js developer",
+    "React developer",
+    "Web developer Karachi",
     "Premium AI Website Studio",
   ],
   alternates: { canonical: "/" },
@@ -55,8 +54,8 @@ const personJsonLd = {
   jobTitle: profile.roles.join(" & "),
   url: siteUrl,
   sameAs: [contact.github, contact.linkedin, contact.facebook, contact.instagram].filter(Boolean),
-  knowsAbout: ["Web development", "C++", "Java", "C#", "SQL", "AI-assisted development"],
-  address: { "@type": "PostalAddress", addressCountry: "PK" },
+  knowsAbout: ["JavaScript", "TypeScript", "React", "Next.js", "Node.js", "Supabase"],
+  address: { "@type": "PostalAddress", addressLocality: "Karachi", addressRegion: "Sindh", addressCountry: "PK" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
