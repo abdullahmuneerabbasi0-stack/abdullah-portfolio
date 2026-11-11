@@ -1,134 +1,164 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
-import { ArrowRight, Download, MapPin } from "lucide-react";
+import { useRef } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { Download, MapPin } from "lucide-react";
 import { profile } from "@/content/site";
 import { T } from "@/components/ui/T";
+import { Pill } from "@/components/ui/Pill";
+import { SplitText } from "@/components/ui/SplitText";
+import { useIntroReady } from "@/components/layout/MotionProvider";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-function RotatingRole() {
-  const [i, setI] = useState(0);
-  useEffect(() => {
-    const id = setInterval(() => setI((v) => (v + 1) % profile.roles.length), 3000);
-    return () => clearInterval(id);
-  }, []);
-  return (
-    <span className="block min-h-[2.2em] text-[0.85em] lg:min-h-[1.15em]">
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.span
-          key={i}
-          initial={{ opacity: 0, filter: "blur(8px)", y: 12 }}
-          animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-          exit={{ opacity: 0, filter: "blur(8px)", y: -12 }}
-          transition={{ duration: 0.45, ease }}
-          className="text-gradient inline-block pb-[0.08em]"
-        >
-          {profile.roles[i]}
-        </motion.span>
-      </AnimatePresence>
-    </span>
-  );
-}
-
 export function Hero() {
-  const item = (d: number) => ({
+  const ready = useIntroReady();
+  const reduced = useReducedMotion();
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+
+  // As the visitor scrolls on, the whole stage settles back like a frame
+  // being pushed away, while the portrait drifts at a slower pace.
+  const scale = useTransform(scrollYProgress, [0, 1], [1, reduced ? 1 : 0.9]);
+  const radius = useTransform(scrollYProgress, [0, 0.4], [0, reduced ? 0 : 40]);
+  const fade = useTransform(scrollYProgress, [0, 0.8], [1, reduced ? 1 : 0.25]);
+  const imgY = useTransform(scrollYProgress, [0, 1], ["0%", reduced ? "0%" : "14%"]);
+
+  const fadeUp = (d: number) => ({
     initial: { opacity: 0, y: 24 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.7, delay: d, ease },
+    animate: ready ? { opacity: 1, y: 0 } : undefined,
+    transition: { duration: 1, delay: d, ease },
   });
 
   return (
-    <section id="top" className="relative px-6 pt-36 pb-20 sm:pt-44 md:pb-28">
-      <div className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[1.25fr_1fr]">
-        <div>
-          <motion.p
-            {...item(0)}
-            className="glass mb-6 inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs text-muted sm:text-sm"
-          >
-            <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_10px] shadow-emerald-400" />
-            {profile.availability}
-          </motion.p>
+    <section id="top" ref={ref} className="relative">
+      <motion.div
+        style={{ scale, borderRadius: radius, opacity: fade }}
+        className="relative flex min-h-[100svh] origin-top flex-col overflow-hidden px-5 pt-28 pb-[calc(8vh+2rem)] sm:px-8 sm:pt-32"
+      >
+        <div className="mx-auto grid w-full max-w-7xl flex-1 items-center gap-12 lg:grid-cols-12 lg:gap-10">
+          <div className="lg:col-span-7">
+            <motion.p {...fadeUp(0.1)} className="eyebrow mb-8 text-accent-2">
+              <span className="relative flex h-2 w-2" aria-hidden="true">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60 motion-reduce:animate-none" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+              </span>
+              {profile.availability}
+            </motion.p>
 
-          <motion.h1
-            {...item(0.08)}
-            className="font-display text-[2.6rem] leading-[1.05] font-bold tracking-tight sm:text-6xl lg:text-[3.6rem] xl:text-7xl"
-          >
-            Hi, I&apos;m {profile.shortName}.
-            <br />
-            <span className="text-text/90">I&apos;m a</span>
-            <span className="sr-only">{profile.roles.join(" and ")}</span>
-            <span aria-hidden="true">
-              <RotatingRole />
-            </span>
-          </motion.h1>
+            <h1 className="font-display leading-[0.95] font-normal tracking-[-0.02em]">
+              <span className="sr-only">
+                Hi, I&apos;m {profile.shortName}. I&apos;m a {profile.roles.join(" and ")}.
+              </span>
+              <span aria-hidden="true">
+                <SplitText
+                  as="span"
+                  text={`Hi, I'm ${profile.shortName}.`}
+                  play={ready}
+                  delay={0.15}
+                  className="block text-[3.4rem] sm:text-[5.5rem] lg:text-[6.2rem] xl:text-[7rem]"
+                />
+                <SplitText
+                  as="span"
+                  text={`I'm a ${profile.roles[0]
+                    .split(" ")
+                    .map((w) => `*${w}`)
+                    .join(" ")}`}
+                  play={ready}
+                  delay={0.35}
+                  className="mt-3 block max-w-[20ch] text-[2rem] leading-[1.05] text-text/90 sm:text-5xl lg:text-[3.4rem]"
+                />
+              </span>
+            </h1>
 
-          <motion.p {...item(0.18)} className="mt-6 max-w-xl text-lg leading-relaxed text-muted sm:text-xl">
-            {profile.headline}
-          </motion.p>
+            <motion.p {...fadeUp(0.7)} className="mt-8 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+              {profile.headline}
+            </motion.p>
 
-          <motion.div {...item(0.28)} className="mt-9 flex flex-wrap items-center gap-3">
-            <Link
-              href="/#projects"
-              className="bg-accent-gradient group inline-flex items-center gap-2 rounded-xl px-6 py-3.5 font-semibold text-black shadow-[0_8px_30px_-6px] shadow-accent/50 transition hover:brightness-110"
+            <motion.div {...fadeUp(0.85)} className="mt-10 flex flex-wrap items-center gap-3">
+              <Pill href="/#projects" variant="solid">
+                View projects
+              </Pill>
+              <Pill href="/#contact" variant="outline">
+                Hire me
+              </Pill>
+              {profile.cv && (
+                <a
+                  href={profile.cv}
+                  download
+                  className="link-underline ml-2 inline-flex items-center gap-2 pb-1 text-[0.8rem] uppercase tracking-[0.14em] text-muted transition-colors hover:text-text"
+                >
+                  <Download className="h-4 w-4" aria-hidden="true" /> Download CV
+                </a>
+              )}
+            </motion.div>
+          </div>
+
+          <div className="lg:col-span-5">
+            <motion.figure
+              initial={{ clipPath: "inset(100% 0% 0% 0%)" }}
+              animate={ready ? { clipPath: "inset(0% 0% 0% 0%)" } : undefined}
+              transition={{ duration: 1.4, delay: 0.25, ease: [0.76, 0, 0.24, 1] }}
+              className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[1.75rem] bg-surface-2 sm:max-w-md lg:max-w-none"
             >
-              View projects
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Link>
-            <Link
-              href="/#contact"
-              className="glass inline-flex items-center gap-2 rounded-xl px-6 py-3.5 font-semibold text-text transition hover:bg-white/10"
-            >
-              Hire me
-            </Link>
-            {profile.cv && (
-              <a
-                href={profile.cv}
-                download
-                className="inline-flex items-center gap-2 rounded-xl px-4 py-3.5 font-medium text-muted transition hover:text-text"
-              >
-                <Download className="h-4 w-4" /> Download CV
-              </a>
-            )}
-          </motion.div>
+              {profile.photo ? (
+                <motion.div style={{ y: imgY }} className="absolute -inset-y-[8%] inset-x-0">
+                  <motion.div
+                    className="absolute inset-0"
+                    initial={{ scale: 1.25 }}
+                    animate={ready ? { scale: 1 } : undefined}
+                    transition={{ duration: 1.8, delay: 0.25, ease }}
+                  >
+                    <Image
+                      src={profile.photo}
+                      alt={`Portrait of ${profile.name}`}
+                      fill
+                      sizes="(max-width: 1024px) 90vw, 40vw"
+                      className="object-cover object-[50%_30%]"
+                      priority
+                    />
+                  </motion.div>
+                </motion.div>
+              ) : (
+                <div className="grid h-full place-items-center">
+                  <span className="font-display text-8xl italic text-text/90">{profile.initials}</span>
+                </div>
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" aria-hidden="true" />
+              <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6">
+                <div>
+                  <p className="font-display text-2xl leading-tight">{profile.name}</p>
+                  <p className="mt-1 flex items-center gap-1.5 text-xs uppercase tracking-[0.14em] text-text/70">
+                    <MapPin className="h-3.5 w-3.5 text-accent-2" aria-hidden="true" /> <T value={profile.location} />
+                  </p>
+                </div>
+              </figcaption>
+            </motion.figure>
+          </div>
         </div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.94, rotate: -2 }}
-          animate={{ opacity: 1, scale: 1, rotate: 0 }}
-          transition={{ duration: 0.9, delay: 0.2, ease }}
-          className="relative mx-auto w-full max-w-xs sm:max-w-sm"
+          {...fadeUp(1.05)}
+          className="mx-auto mt-14 grid w-full max-w-7xl grid-cols-2 gap-x-6 gap-y-5 border-t border-line pt-6 sm:grid-cols-4"
         >
-          <div className="bg-accent-gradient absolute -inset-px rounded-3xl opacity-40 blur-xl" aria-hidden="true" />
-          <div className="glass relative rounded-3xl p-6">
-            <div className="relative mb-6 aspect-square overflow-hidden rounded-2xl bg-surface-2">
-              {profile.photo ? (
-                <Image src={profile.photo} alt={`Portrait of ${profile.name}`} fill sizes="(max-width: 640px) 90vw, 384px" className="object-cover" priority />
-              ) : (
-                <div className="grid h-full place-items-center bg-[radial-gradient(circle_at_30%_20%,rgb(255_77_46/0.35),transparent_60%),radial-gradient(circle_at_80%_90%,rgb(255_176_32/0.25),transparent_55%)]">
-                  <span className="font-display text-8xl font-bold text-white/90">{profile.initials}</span>
-                </div>
-              )}
-            </div>
-            <p className="font-display text-xl font-semibold">{profile.name}</p>
-            <p className="text-sm text-muted">{profile.roles.join(" · ")}</p>
-            <p className="mt-2 flex items-center gap-1.5 text-sm text-muted">
-              <MapPin className="h-4 w-4 text-accent-2" /> <T value={profile.location} />
-            </p>
-            <dl className="mt-5 grid gap-2 border-t border-white/10 pt-5 text-sm">
-              {profile.focus.map((f) => (
-                <div key={f.label} className="flex justify-between gap-4">
-                  <dt className="text-muted">{f.label}</dt>
-                  <dd className="text-right font-medium">{f.value}</dd>
-                </div>
-              ))}
+          {profile.focus.map((f) => (
+            <dl key={f.label}>
+              <dt className="text-[0.68rem] uppercase tracking-[0.22em] text-muted">{f.label}</dt>
+              <dd className="mt-1.5 font-display text-xl leading-snug">{f.value}</dd>
             </dl>
-          </div>
+          ))}
+          <a
+            href="#about"
+            className="group col-span-2 flex items-center gap-3 self-end text-[0.68rem] uppercase tracking-[0.22em] text-muted hover:text-text sm:col-span-1 sm:justify-self-end"
+          >
+            Scroll to explore
+            <span className="relative block h-10 w-px overflow-hidden bg-line" aria-hidden="true">
+              <span className="animate-scroll-cue absolute inset-0 bg-accent" />
+            </span>
+          </a>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 }

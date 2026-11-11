@@ -1,61 +1,63 @@
-import { Target } from "lucide-react";
 import { interests, skillGroups } from "@/content/site";
-import { Icon } from "@/components/ui/Icon";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { Spotlight } from "@/components/ui/Spotlight";
 
 export function Skills() {
+  // Doubled so the marquee can loop seamlessly.
+  const loop = [...interests, ...interests];
   return (
-    <section id="skills" className="px-6 py-24 md:py-32">
-      <div className="mx-auto max-w-6xl">
+    <section id="skills" className="py-24 md:py-36">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <SectionHeading
           eyebrow="Skills"
-          title="Technical skills"
+          title="Technical *skills*"
           intro="The languages, frameworks and tools I build with."
         />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="border-b border-line">
           {skillGroups.map((g, i) => (
-            <Reveal key={g.title} delay={(i % 3) * 0.08}>
-              <Spotlight className="h-full p-6">
-                <div className="mb-5 flex items-center gap-3">
-                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-accent/10 text-accent-2">
-                    <Icon name={g.icon} className="h-5 w-5" />
-                  </span>
-                  <h3 className="font-display text-lg font-semibold">{g.title}</h3>
-                </div>
-                <ul className="flex flex-wrap gap-2">
+            <li key={g.title}>
+              <Reveal
+                delay={i * 0.05}
+                className="group grid gap-4 border-t border-line py-8 transition-colors duration-500 hover:bg-white/[0.02] md:grid-cols-12 md:items-baseline md:py-10"
+              >
+                <span className="text-xs tracking-[0.2em] text-muted md:col-span-1">0{i + 1}</span>
+                <h3 className="font-display text-3xl transition-all duration-500 group-hover:translate-x-2 group-hover:text-accent-2 group-hover:italic sm:text-4xl md:col-span-4">
+                  {g.title}
+                </h3>
+                <ul className="flex flex-wrap gap-x-2 gap-y-2 text-base text-text/80 md:col-span-7 md:justify-end">
                   {g.skills.map((s) => (
                     <li
                       key={s}
-                      className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-1.5 font-mono text-xs text-text/90 transition-colors hover:border-accent-2/50 hover:text-accent-3"
+                      className="rounded-full border border-line px-4 py-1.5 transition-colors duration-300 hover:border-accent hover:text-accent-3"
                     >
                       {s}
                     </li>
                   ))}
                 </ul>
-              </Spotlight>
-            </Reveal>
+              </Reveal>
+            </li>
           ))}
-        </div>
-        <Reveal delay={0.1} className="mt-4">
-          <Spotlight className="flex flex-col gap-5 p-6 sm:flex-row sm:items-center">
-            <div className="flex shrink-0 items-center gap-3">
-              <span className="grid h-10 w-10 place-items-center rounded-xl bg-accent/10 text-accent-2">
-                <Target className="h-5 w-5" aria-hidden="true" />
-              </span>
-              <h3 className="font-display text-lg font-semibold">Professional interests</h3>
-            </div>
-            <ul className="flex flex-wrap gap-2 sm:ml-auto">
-              {interests.map((s) => (
-                <li key={s} className="rounded-full border border-accent-2/30 bg-accent/[0.06] px-3.5 py-1.5 text-sm text-accent-3">
-                  {s}
-                </li>
-              ))}
-            </ul>
-          </Spotlight>
-        </Reveal>
+        </ul>
       </div>
+
+      <Reveal className="mt-24 md:mt-32">
+        <h3 className="eyebrow mx-auto mb-8 max-w-7xl px-5 text-accent-2 sm:px-8">Professional interests</h3>
+        <div className="relative overflow-hidden border-y border-line py-8 [mask-image:linear-gradient(90deg,transparent,black_10%,black_90%,transparent)]">
+          <ul className="sr-only">
+            {interests.map((s) => (
+              <li key={s}>{s}</li>
+            ))}
+          </ul>
+          <div className="animate-marquee flex w-max" aria-hidden="true">
+            {loop.map((s, i) => (
+              <span key={i} className="flex items-center font-display text-4xl whitespace-nowrap sm:text-6xl">
+                <span className={i % 2 ? "italic text-accent-2" : ""}>{s}</span>
+                <span className="mx-8 text-2xl text-accent sm:mx-12">✦</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      </Reveal>
     </section>
   );
 }

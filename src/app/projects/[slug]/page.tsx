@@ -9,7 +9,8 @@ import { Reveal } from "@/components/ui/Reveal";
 import { Spotlight } from "@/components/ui/Spotlight";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { GithubIcon } from "@/components/ui/BrandIcons";
-import { ProjectVisual } from "@/components/project/ProjectVisual";
+import { ProjectPoster, ProjectVisual } from "@/components/project/ProjectVisual";
+import { Pill } from "@/components/ui/Pill";
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
@@ -33,8 +34,8 @@ function Block({ eyebrow, title, children }: { eyebrow: string; title: string; c
   return (
     <section className="py-14 md:py-20">
       <Reveal className="mb-8">
-        <p className="mb-2 font-mono text-xs uppercase tracking-[0.25em] text-accent-2">{eyebrow}</p>
-        <h2 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">{title}</h2>
+        <p className="eyebrow mb-5 text-accent-2">{eyebrow}</p>
+        <h2 className="font-display text-4xl leading-[1.05] sm:text-5xl">{title}</h2>
       </Reveal>
       {children}
     </section>
@@ -60,8 +61,8 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
     <article className="px-6 pt-32 pb-16 sm:pt-40">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
       <div className="mx-auto max-w-6xl">
-        <Link href="/#projects" className="inline-flex items-center gap-2 text-sm text-muted hover:text-text">
-          <ArrowLeft className="h-4 w-4" /> All projects
+        <Link href="/#projects" className="group inline-flex items-center gap-2 text-[0.75rem] uppercase tracking-[0.18em] text-muted hover:text-text">
+          <ArrowLeft className="h-4 w-4 transition-transform duration-500 group-hover:-translate-x-1" /> All projects
         </Link>
 
         {/* Hero */}
@@ -69,42 +70,32 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
           <Reveal>
             <div className="flex flex-wrap items-center gap-3">
               <StatusBadge status={p.status} detail={p.statusDetail} />
-              <span className="font-mono text-xs uppercase tracking-widest text-muted">{p.category}</span>
+              <span className="text-[0.7rem] uppercase tracking-[0.22em] text-muted">{p.category}</span>
             </div>
-            <h1 className="mt-5 font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">{p.title}</h1>
+            <h1 className="mt-6 font-display text-5xl leading-[0.98] tracking-[-0.02em] sm:text-6xl lg:text-7xl">{p.title}</h1>
             <p className="mt-5 text-xl leading-relaxed text-muted">{p.tagline}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               {p.liveUrl && (
-                <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className="bg-accent-gradient inline-flex items-center gap-2 rounded-xl px-5 py-3 font-semibold text-black">
-                  Live site <ExternalLink className="h-4 w-4" />
-                </a>
+                <Pill href={p.liveUrl} external variant="copper" icon={<ExternalLink className="h-4 w-4" aria-hidden="true" />}>
+                  Live site
+                </Pill>
               )}
               {p.repoUrl && (
-                <a href={p.repoUrl} target="_blank" rel="noopener noreferrer" className="glass inline-flex items-center gap-2 rounded-xl px-5 py-3 font-semibold">
-                  <GithubIcon className="h-4 w-4" /> Source
-                </a>
+                <Pill href={p.repoUrl} external variant="outline" icon={<GithubIcon className="h-4 w-4" />}>
+                  Source
+                </Pill>
               )}
-              <Link href="/#contact" className="glass inline-flex items-center gap-2 rounded-xl px-5 py-3 font-semibold hover:bg-white/10">
-                Discuss this project <ArrowRight className="h-4 w-4" />
-              </Link>
+              <Pill href="/#contact" variant="solid">
+                Discuss this project
+              </Pill>
             </div>
           </Reveal>
           <Reveal delay={0.15}>
-            <div className="glass relative h-96 overflow-hidden rounded-3xl">
+            <div className="relative h-[28rem] overflow-hidden rounded-[2rem] border border-line">
               {p.visual === "studio" ? (
                 <ProjectVisual />
               ) : (
-                <div className="absolute inset-0 flex flex-col justify-end bg-[radial-gradient(circle_at_70%_20%,rgb(255_77_46/0.3),transparent_60%),radial-gradient(circle_at_10%_90%,rgb(255_176_32/0.18),transparent_55%)] p-8">
-                  <p className="font-mono text-xs uppercase tracking-widest text-muted">{p.category}</p>
-                  <p className="mt-2 font-display text-3xl font-bold">{p.title}</p>
-                  <ul className="mt-5 flex flex-wrap gap-2">
-                    {p.technologies.map((t) => (
-                      <li key={t} className="rounded-lg border border-white/15 bg-black/40 px-2.5 py-1 font-mono text-[11px] text-accent-3">
-                        {t}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <ProjectPoster title={p.title} category={p.category} technologies={p.technologies} index={projects.indexOf(p) + 1} />
               )}
             </div>
           </Reveal>
@@ -137,7 +128,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
                 <p className="mb-3 text-sm text-muted">Technologies</p>
                 <ul className="flex flex-wrap gap-2">
                   {p.technologies.map((t) => (
-                    <li key={t} className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-1.5 font-mono text-xs">
+                    <li key={t} className="rounded-full border border-line px-3.5 py-1.5 text-xs text-text/80">
                       {t}
                     </li>
                   ))}
@@ -173,14 +164,14 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
               <Reveal key={f.title} delay={(i % 3) * 0.08}>
                 <Spotlight as="article" className="flex h-full flex-col p-6">
                   <div className="mb-4 flex items-center justify-between">
-                    <span className="grid h-11 w-11 place-items-center rounded-xl bg-accent/10 text-accent-2">
+                    <span className="grid h-11 w-11 place-items-center rounded-full border border-line text-accent-2">
                       <Icon name={f.icon} className="h-5 w-5" />
                     </span>
-                    <span className="rounded-full border border-white/10 px-2.5 py-0.5 font-mono text-[11px] uppercase tracking-wider text-muted">
+                    <span className="rounded-full border border-line px-2.5 py-0.5 text-[10px] uppercase tracking-[0.18em] text-muted">
                       {f.state}
                     </span>
                   </div>
-                  <h3 className="font-display text-lg font-semibold">{f.title}</h3>
+                  <h3 className="font-display text-lg font-normal">{f.title}</h3>
                   <p className="mt-2 text-sm text-muted">{f.description}</p>
                   <ul className="mt-4 space-y-2 text-sm">
                     {f.points.map((pt) => (
@@ -203,9 +194,9 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
           <div className="grid gap-5 sm:grid-cols-2">
             {p.architecture.map((a, i) => (
               <Reveal key={a.title} delay={(i % 2) * 0.08}>
-                <div className="h-full rounded-2xl border border-white/10 bg-surface/60 p-6">
-                  <p className="font-mono text-xs text-accent-3">0{i + 1}</p>
-                  <h3 className="mt-2 font-display text-lg font-semibold">{a.title}</h3>
+                <div className="h-full rounded-3xl border border-line bg-surface/60 p-7">
+                  <p className="font-display text-3xl italic text-accent-2">0{i + 1}</p>
+                  <h3 className="mt-2 font-display text-lg font-normal">{a.title}</h3>
                   <p className="mt-2 text-muted">{a.description}</p>
                 </div>
               </Reveal>
@@ -215,7 +206,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
             <p className="mb-3 text-sm text-muted">Planned technologies</p>
             <ul className="flex flex-wrap gap-2">
               {p.technologies.map((t) => (
-                <li key={t} className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-1.5 font-mono text-xs">
+                <li key={t} className="rounded-full border border-line px-3.5 py-1.5 text-xs text-text/80">
                   {t}
                 </li>
               ))}
@@ -230,7 +221,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
           <div className="grid gap-5 md:grid-cols-2">
             <Reveal>
               <Spotlight className="h-full p-7">
-                <h3 className="font-display text-lg font-semibold">Completed so far</h3>
+                <h3 className="font-display text-lg font-normal">Completed so far</h3>
                 <ul className="mt-4 space-y-3">
                   {p.progress.done.map((d) => (
                     <li key={d} className="flex gap-3">
@@ -242,7 +233,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
             </Reveal>
             <Reveal delay={0.1}>
               <Spotlight className="h-full p-7">
-                <h3 className="font-display text-lg font-semibold">Next milestones</h3>
+                <h3 className="font-display text-lg font-normal">Next milestones</h3>
                 <ul className="mt-4 space-y-3">
                   {p.progress.next.map((d) => (
                     <li key={d} className="flex gap-3 text-muted">
@@ -258,14 +249,14 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
         )}
 
         <Reveal>
-          <div className="glass flex flex-col items-start justify-between gap-6 rounded-3xl p-8 sm:flex-row sm:items-center sm:p-10">
+          <div className="glass flex flex-col items-start justify-between gap-6 rounded-[2rem] p-8 sm:flex-row sm:items-center sm:p-10">
             <div>
-              <h2 className="font-display text-2xl font-bold">Interested in this project?</h2>
+              <h2 className="font-display text-4xl">Interested in this <em className="text-accent-2">project?</em></h2>
               <p className="mt-2 text-muted">Want to follow its progress or build something similar? Let&apos;s talk.</p>
             </div>
-            <Link href="/#contact" className="bg-accent-gradient inline-flex items-center gap-2 rounded-xl px-6 py-3.5 font-semibold text-black hover:brightness-110">
-              Get in touch <ArrowRight className="h-4 w-4" />
-            </Link>
+            <Pill href="/#contact" variant="copper" icon={<ArrowRight className="h-4 w-4" aria-hidden="true" />}>
+              Get in touch
+            </Pill>
           </div>
         </Reveal>
       </div>
