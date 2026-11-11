@@ -59,12 +59,13 @@ const sameToken = (a: string, b: string) => {
  */
 export async function setupAdmin(_prev: FormState, form: FormData): Promise<FormState> {
   if (!isDbConfigured()) return { error: "The database isn't connected yet." };
-  const expected = process.env.ADMIN_SETUP_TOKEN ?? "";
+  // Trimmed on both sides: a stray space or newline from copy-paste shouldn't lock you out.
+  const expected = (process.env.ADMIN_SETUP_TOKEN ?? "").trim();
   if (expected.length < 16) return { error: "ADMIN_SETUP_TOKEN must be set (at least 16 characters) in your hosting environment." };
 
   const ipHash = await clientIpHash();
   if (await loginBlocked("setup", ipHash)) return { error: "Too many failed attempts. Wait 15 minutes and try again." };
-  if (!sameToken(String(form.get("token") ?? ""), expected)) {
+  if (!sameToken(String(form.get("token") ?? "").trim(), expected)) {
     await recordLoginAttempt("setup", ipHash, false);
     return { errors: { token: "That setup token is not correct." } };
   }
