@@ -13,10 +13,30 @@ const g = globalThis as unknown as { __portfolioSql?: Sql };
 
 export const isDbConfigured = () => !!process.env.DATABASE_URL;
 
+/**
+ * Percent-encodes the password in a connection string, so a password pasted
+ * as-is still works when it contains characters such as @ # / ? or :.
+ * Already-encoded passwords are left unchanged.
+ */
+export function normalizeDatabaseUrl(raw: string): string {
+  const url = raw.trim();
+  const m = url.match(/^(postgres(?:ql)?:\/\/)([^:@/]+):([\s\S]*)@([^@]+)$/);
+  if (!m) return url;
+  const [, scheme, user, pass, rest] = m;
+  let plain = pass;
+  try {
+    plain = decodeURIComponent(pass);
+  } catch {
+    // A lone "%" that isn't an escape: treat the password as plain text.
+  }
+  return `${scheme}${user}:${encodeURIComponent(plain)}@${rest}`;
+}
+
 export function db(): Sql {
-  const url = process.env.DATABASE_URL;
-  if (!url) throw new Error("DATABASE_URL is not set");
+  const raw = process.env.DATABASE_URL;
+  if (!raw) throw new Error("DATABASE_URL is not set");
   if (!g.__portfolioSql) {
+    const url = normalizeDatabaseUrl(raw);
     const local = /@(localhost|127\.0\.0\.1)(:|\/)/.test(url) || process.env.DATABASE_SSL === "disable";
     g.__portfolioSql = postgres(url, {
       prepare: false,
