@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { animate, useInView, useReducedMotion } from "motion/react";
+import { animate, useInView } from "motion/react";
+import { useReducedMotion } from "@/components/layout/MotionProvider";
 
 /** A number that counts up from zero the first time it scrolls into view. */
 export function Counter({ value, className }: { value: number; className?: string }) {

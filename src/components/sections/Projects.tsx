@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { projects } from "@/content/projects";
+import type { ProjectRecord, ResolvedImage, SectionConfig } from "@/lib/content/types";
 import { Reveal } from "@/components/ui/Reveal";
 import { Pill } from "@/components/ui/Pill";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { ParallaxFrame } from "@/components/ui/ParallaxFrame";
 import { ViewCursor } from "@/components/ui/ViewCursor";
-import { ProjectPoster, ProjectVisual } from "@/components/project/ProjectVisual";
+import { ProjectCover } from "@/components/project/ProjectVisual";
 
 function Tech({ items }: { items: string[] }) {
   return (
@@ -21,19 +21,23 @@ function Tech({ items }: { items: string[] }) {
   );
 }
 
-export function Projects() {
+export function Projects({
+  section,
+  projects,
+  images,
+}: {
+  section: SectionConfig;
+  projects: ProjectRecord[];
+  images: Record<string, ResolvedImage>;
+}) {
   const flagship = projects.find((p) => p.flagship) ?? projects[0];
   const others = projects.filter((p) => p !== flagship);
 
   return (
-    <section id="projects" className="py-24 md:py-36">
+    <section id="projects" className="section-pad">
       <ViewCursor label="View" />
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
-        <SectionHeading
-          eyebrow="Featured projects"
-          title="What I'm *building*"
-          intro="Projects presented honestly: what exists today, and where each one is heading."
-        />
+        <SectionHeading eyebrow={section.eyebrow} title={section.title} intro={section.intro || undefined} />
 
         {flagship && (
           <article className="grid gap-10 lg:grid-cols-12 lg:items-end">
@@ -44,7 +48,7 @@ export function Projects() {
               className="group block lg:col-span-8"
             >
               <ParallaxFrame className="aspect-[3/4] sm:aspect-[16/11]">
-                <ProjectVisual />
+                <ProjectCover project={flagship} image={flagship.cover ? images[flagship.cover] : null} index={1} sizes="(max-width: 1024px) 100vw, 66vw" />
               </ParallaxFrame>
             </Link>
             <Reveal className="lg:col-span-4 lg:pb-4">
@@ -67,12 +71,13 @@ export function Projects() {
           </article>
         )}
 
+        {others.length > 0 && (
         <div className="mt-24 grid gap-16 md:mt-36 md:grid-cols-2 md:gap-10">
           {others.map((p, i) => (
             <article key={p.slug} className={i % 2 === 1 ? "md:mt-40" : undefined}>
               <Link href={`/projects/${p.slug}`} data-cursor="view" className="group block">
                 <ParallaxFrame className="aspect-[4/5]">
-                  <ProjectPoster title={p.title} category={p.category} technologies={p.technologies} index={i + 2} />
+                  <ProjectCover project={p} image={p.cover ? images[p.cover] : null} index={i + 2} />
                 </ParallaxFrame>
                 <Reveal className="mt-7">
                   <StatusBadge status={p.status} detail={p.statusDetail} />
@@ -89,6 +94,7 @@ export function Projects() {
             </article>
           ))}
         </div>
+        )}
 
         <Reveal className="mt-28">
           <div className="flex flex-col items-start justify-between gap-8 border-y border-line py-10 sm:flex-row sm:items-center">

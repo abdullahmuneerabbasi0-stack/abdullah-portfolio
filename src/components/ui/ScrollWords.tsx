@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
+import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
+import { useReducedMotion } from "@/components/layout/MotionProvider";
 
 function Word({
   children,

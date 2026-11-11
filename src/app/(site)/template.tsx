@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
+import { usePageTransitions } from "@/components/layout/MotionProvider";
 
 // The first render is covered by the intro loader, so only later
 // navigations get the curtain transition.
@@ -9,7 +10,9 @@ let firstRender = true;
 
 /** Wraps every page so route changes get a short curtain wipe and fade-in. */
 export default function Template({ children }: { children: React.ReactNode }) {
-  const [animateIn] = useState(() => !firstRender);
+  const enabled = usePageTransitions();
+  const [initial] = useState(() => !firstRender);
+  const animateIn = initial && enabled;
   useEffect(() => {
     firstRender = false;
   }, []);

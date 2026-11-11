@@ -33,7 +33,7 @@ export function Pill({
   download?: boolean;
   className?: string;
 }) {
-  const cls = `group relative isolate inline-flex items-center gap-2.5 overflow-hidden rounded-full px-6 py-3.5 text-[0.8rem] font-medium uppercase tracking-[0.14em] transition-colors duration-500 before:absolute before:inset-0 before:-z-10 before:translate-y-full before:rounded-full before:transition-transform before:duration-500 before:ease-[cubic-bezier(0.22,1,0.36,1)] hover:before:translate-y-0 ${variants[variant]} ${className}`;
+  const cls = `group relative isolate inline-flex items-center gap-2.5 overflow-hidden rounded-[var(--btn-radius)] px-6 py-3.5 text-[0.8rem] font-medium uppercase tracking-[0.14em] transition-colors duration-500 before:absolute before:inset-0 before:-z-10 before:translate-y-full before:rounded-[inherit] before:transition-transform before:duration-500 before:ease-[cubic-bezier(0.22,1,0.36,1)] hover:before:translate-y-0 ${variants[variant]} ${className}`;
   const inner = (
     <span className="relative inline-flex items-center gap-2.5 transition-colors duration-500">
       {children}

@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 /**
  * A stylised concept illustration of the Studio's agent workflow.
  * It is clearly labelled as a concept, not a product screenshot.
@@ -5,7 +7,7 @@
 export function ProjectVisual() {
   const agents = ["Frontend", "Backend", "Database", "UI/UX", "Animation"];
   return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 overflow-hidden bg-[radial-gradient(circle_at_50%_35%,rgb(217_138_92/0.22),transparent_60%),linear-gradient(180deg,#1d1916,#0c0a09)] p-8">
+    <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 overflow-hidden bg-[radial-gradient(circle_at_50%_35%,rgb(var(--accent-rgb)/0.22),transparent_60%),linear-gradient(180deg,#1d1916,#0c0a09)] p-8">
       <div className="rounded-2xl border border-line bg-bg/60 px-5 py-3 text-center text-sm backdrop-blur">
         <p className="text-[10px] uppercase tracking-[0.22em] text-muted">Client</p>
         <p className="font-display text-lg">Requirements discovery</p>
@@ -34,7 +36,7 @@ export function ProjectVisual() {
 /** A typographic poster used as cover art for projects without screenshots. */
 export function ProjectPoster({ title, category, technologies, index }: { title: string; category: string; technologies: string[]; index: number }) {
   return (
-    <div className="absolute inset-0 flex flex-col justify-between overflow-hidden bg-[radial-gradient(circle_at_80%_10%,rgb(217_138_92/0.28),transparent_55%),linear-gradient(160deg,#211c18,#0c0a09_70%)] p-7 sm:p-9">
+    <div className="absolute inset-0 flex flex-col justify-between overflow-hidden bg-[radial-gradient(circle_at_80%_10%,rgb(var(--accent-rgb)/0.28),transparent_55%),linear-gradient(160deg,#211c18,#0c0a09_70%)] p-7 sm:p-9">
       <div className="flex items-start justify-between text-[10px] uppercase tracking-[0.22em] text-muted">
         <span>{category}</span>
         <span className="font-display text-base normal-case italic tracking-normal text-accent-2">No. 0{index}</span>
@@ -49,4 +51,22 @@ export function ProjectPoster({ title, category, technologies, index }: { title:
       <p className="text-[11px] uppercase tracking-[0.16em] text-text/55">{technologies.join(" · ")}</p>
     </div>
   );
+}
+
+/** A project's cover: an uploaded image, the studio diagram, or a typographic poster. */
+export function ProjectCover({
+  project,
+  image,
+  index,
+  sizes = "(max-width: 1024px) 100vw, 50vw",
+}: {
+  project: { title: string; category: string; technologies: string[]; visual?: "studio"; coverAlt?: string };
+  image?: { src: string; alt: string } | null;
+  index: number;
+  sizes?: string;
+}) {
+  if (image)
+    return <Image src={image.src} alt={project.coverAlt || image.alt || `${project.title} cover`} fill sizes={sizes} className="object-cover" />;
+  if (project.visual === "studio") return <ProjectVisual />;
+  return <ProjectPoster title={project.title} category={project.category} technologies={project.technologies} index={index} />;
 }

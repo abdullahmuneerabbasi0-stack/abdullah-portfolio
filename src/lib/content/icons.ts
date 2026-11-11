@@ -1,0 +1,28 @@
+/** Icon names that content can use. Keep in sync with components/ui/Icon.tsx. */
+export const ICON_NAMES = [
+  "Sparkles",
+  "Code2",
+  "Layout",
+  "LayoutDashboard",
+  "Database",
+  "Server",
+  "Wrench",
+  "Workflow",
+  "Bot",
+  "Wand2",
+  "ClipboardList",
+  "MessageSquare",
+  "Handshake",
+  "Globe",
+  "Smartphone",
+  "ShoppingCart",
+  "Palette",
+  "Search",
+  "Shield",
+  "Rocket",
+  "LineChart",
+  "Cloud",
+  "Cpu",
+  "PenTool",
+] as const;
+export type IconName = (typeof ICON_NAMES)[number];
