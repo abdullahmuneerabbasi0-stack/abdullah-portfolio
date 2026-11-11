@@ -75,8 +75,8 @@ const contactSettings: SettingsMap["contact"] = {
   github: contact.github ?? "",
   facebook: contact.facebook ?? "",
   instagram: contact.instagram ?? "",
-  heading: "Let's build something *remarkable.*",
-  intro: "Have a project, an opportunity or an idea? Reach out below and I'll get back to you.",
+  heading: "Let's *talk.*",
+  intro: "Hiring for an internship or junior role, or have a question about my work? Reach out below and I'll get back to you.",
   form: {
     // Off until the database exists, because messages need somewhere to go.
     enabled: false,
