@@ -1,58 +1,71 @@
-import { Award, ExternalLink, GraduationCap } from "lucide-react";
+"use client";
+
+import { useRef } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { Award, ExternalLink } from "lucide-react";
 import { certifications, education } from "@/content/site";
 import { T } from "@/components/ui/T";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { Spotlight } from "@/components/ui/Spotlight";
 
 export function Education() {
+  const ref = useRef<HTMLOListElement>(null);
+  const reduced = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.8", "end 0.6"] });
+  const scaleY = useTransform(scrollYProgress, [0, 1], reduced ? [1, 1] : [0, 1]);
+
   return (
-    <section id="education" className="px-6 py-24 md:py-32">
-      <div className="mx-auto max-w-6xl">
-        <SectionHeading eyebrow="Education" title={certifications.length ? "Education & certifications" : "Education"} />
-        <div className={`grid gap-8 ${certifications.length ? "lg:grid-cols-2" : ""}`}>
-          <ol className="relative space-y-5 border-l border-white/10 pl-8">
+    <section id="education" className="py-24 md:py-36">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+        <SectionHeading eyebrow="Education" title={certifications.length ? "Education & *certifications*" : "*Education*"} />
+        <div className={`grid gap-16 ${certifications.length ? "lg:grid-cols-2" : "md:grid-cols-12"}`}>
+          <ol ref={ref} className={`relative space-y-16 pl-10 sm:pl-16 ${certifications.length ? "" : "md:col-span-10 md:col-start-3"}`}>
+            {/* The timeline draws itself as the section scrolls past. */}
+            <span className="absolute top-2 bottom-2 left-0 w-px bg-line" aria-hidden="true" />
+            <motion.span
+              aria-hidden="true"
+              style={{ scaleY }}
+              className="absolute top-2 bottom-2 left-0 w-px origin-top bg-accent"
+            />
             {education.map((e, i) => (
               <li key={i} className="relative">
-                <span className="bg-accent-gradient absolute top-6 -left-[41px] grid h-5 w-5 place-items-center rounded-full ring-4 ring-bg" aria-hidden="true" />
-                <Reveal delay={i * 0.08}>
-                  <Spotlight className="p-6">
-                    <div className="flex items-start gap-4">
-                      <GraduationCap className="mt-1 h-6 w-6 shrink-0 text-accent-2" aria-hidden="true" />
-                      <div>
-                        {e.period && (
-                          <p className="font-mono text-xs uppercase tracking-widest text-accent-3">
-                            <T value={e.period} />
-                          </p>
-                        )}
-                        <h3 className="mt-2 font-display text-xl font-semibold">
-                          <T value={e.qualification} />
-                        </h3>
-                        {e.institution && (
-                          <p className="mt-1 text-muted">
-                            <T value={e.institution} />
-                          </p>
-                        )}
-                        {e.details && (
-                          <p className="mt-3 text-sm text-muted">
-                            <T value={e.details} />
-                          </p>
-                        )}
-                      </div>
+                <span className="absolute top-3 -left-10 grid h-3 w-3 -translate-x-1/2 place-items-center rounded-full bg-accent ring-8 ring-bg sm:-left-16" aria-hidden="true" />
+                <Reveal delay={0.05}>
+                  <div className="grid gap-4 sm:grid-cols-[5rem_1fr] sm:gap-8">
+                    <span className="font-display text-5xl leading-none italic text-accent-2 sm:text-6xl">0{i + 1}</span>
+                    <div>
+                      {e.period && (
+                        <p className="text-[0.7rem] uppercase tracking-[0.22em] text-muted">
+                          <T value={e.period} />
+                        </p>
+                      )}
+                      <h3 className="mt-2 font-display text-3xl leading-tight sm:text-4xl">
+                        <T value={e.qualification} />
+                      </h3>
+                      {e.institution && (
+                        <p className="mt-2 text-lg text-text/80">
+                          <T value={e.institution} />
+                        </p>
+                      )}
+                      {e.details && (
+                        <p className="mt-2 text-sm text-muted">
+                          <T value={e.details} />
+                        </p>
+                      )}
                     </div>
-                  </Spotlight>
+                  </div>
                 </Reveal>
               </li>
             ))}
           </ol>
           {certifications.length > 0 && (
-            <ul className="grid content-start gap-4">
+            <ul className="grid content-start gap-px overflow-hidden rounded-3xl border border-line bg-line">
               {certifications.map((c, i) => (
-                <Reveal key={c.name} delay={i * 0.06}>
-                  <Spotlight as="li" className="flex items-center gap-4 p-5">
-                    <Award className="h-6 w-6 shrink-0 text-accent-3" aria-hidden="true" />
+                <li key={c.name} className="bg-bg">
+                  <Reveal delay={i * 0.06} className="flex items-center gap-4 p-6">
+                    <Award className="h-6 w-6 shrink-0 text-accent-2" aria-hidden="true" />
                     <div className="flex-1">
-                      <p className="font-semibold">{c.name}</p>
+                      <p className="font-display text-xl">{c.name}</p>
                       <p className="text-sm text-muted">
                         {c.issuer} · {c.year}
                       </p>
@@ -62,8 +75,8 @@ export function Education() {
                         <ExternalLink className="h-4 w-4" />
                       </a>
                     )}
-                  </Spotlight>
-                </Reveal>
+                  </Reveal>
+                </li>
               ))}
             </ul>
           )}

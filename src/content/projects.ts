@@ -193,7 +193,7 @@ projects.push(
     title: "Developer Portfolio Website",
     tagline: "This website: a responsive, animated developer portfolio built with Next.js and deployed on Vercel.",
     summary:
-      "A responsive portfolio with a dark glassmorphism design, built and deployed on Vercel in 5 days, with the first working version live in 1 day.",
+      "A responsive portfolio with a cinematic, editorial design and scroll-driven animations, built and deployed on Vercel in 5 days, with the first working version live in 1 day.",
     status: "Live",
     category: "Website",
     technologies: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Motion", "Vercel", "Claude Code"],
