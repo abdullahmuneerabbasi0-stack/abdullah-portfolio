@@ -1,15 +1,13 @@
 # Content still to add
 
-The site currently has no visible placeholders. These optional items appear automatically once filled in `src/content/site.ts`:
+Email, phone, LinkedIn, GitHub, Facebook, Instagram, the profile photo and the CV are all live.
+These optional items are still empty. Once the admin panel is connected (see [ADMIN.md](ADMIN.md)),
+edit them in `/admin`; until then, edit `src/content/site.ts`.
 
-| Item | Where | Notes |
+| Item | Where in admin | Notes |
 | --- | --- | --- |
-| Public email | `contact.email` | Shows an Email button in Contact |
-| WhatsApp | `contact.whatsapp` | Digits only with country code, e.g. `923001234567` |
-| LinkedIn | `contact.linkedin` | Full profile URL |
-| Photo | `public/profile.jpg`, then `profile.photo = "/profile.jpg"` | Replaces the "MA" monogram |
-| CV | `public/cv.pdf`, then `profile.cv = "/cv.pdf"` | Adds Download CV buttons |
-| Certifications | `certifications` | Hidden while empty |
-| Custom domain | Vercel env var `NEXT_PUBLIC_SITE_URL` | Only if you add one |
-
-Any text wrapped in `ph("...")` shows on the site with a dashed amber outline as a placeholder.
+| WhatsApp | Contact | Digits only with country code, e.g. `923001234567` |
+| Certifications | About & education | Section stays hidden while empty |
+| Testimonials | Testimonials | Section stays hidden until you add real ones |
+| Contact form | Contact > Form settings | Off by default; turn on after the database is connected |
+| Custom domain | Vercel env var `NEXT_PUBLIC_SITE_URL` | Only if you buy one |
