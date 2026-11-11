@@ -4,20 +4,28 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
-import { contact, profile } from "@/content/site";
-
-const links = [
-  { id: "about", label: "About" },
-  { id: "skills", label: "Skills" },
-  { id: "services", label: "Services" },
-  { id: "projects", label: "Projects" },
-  { id: "education", label: "Education" },
-  { id: "contact", label: "Contact" },
-];
+import type { AppearanceSettings } from "@/lib/content/types";
+import type { NavLink } from "@/components/site/nav";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-export function Navbar() {
+export function Navbar({
+  links,
+  cta,
+  name,
+  initials,
+  email,
+  location,
+  header,
+}: {
+  links: NavLink[];
+  cta: { label: string; href: string } | null;
+  name: string;
+  initials: string;
+  email: string;
+  location: string;
+  header: AppearanceSettings["header"];
+}) {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const [open, setOpen] = useState(false);
@@ -30,7 +38,7 @@ export function Navbar() {
   useMotionValueEvent(scrollY, "change", (y) => {
     const prev = scrollY.getPrevious() ?? 0;
     setScrolled(y > 24);
-    setHidden(y > 400 && y > prev + 4);
+    setHidden(header.hideOnScroll && y > 400 && y > prev + 4);
     if (y < prev - 4) setHidden(false);
     if (y < 200) setActive(null);
   });
@@ -45,11 +53,11 @@ export function Navbar() {
       { rootMargin: "-45% 0px -50% 0px" },
     );
     for (const l of links) {
-      const el = document.getElementById(l.id);
+      const el = l.sectionId ? document.getElementById(l.sectionId) : null;
       if (el) observer.observe(el);
     }
     return () => observer.disconnect();
-  }, [isHome]);
+  }, [isHome, links]);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -69,25 +77,27 @@ export function Navbar() {
       <nav
         aria-label="Main"
         className={`relative z-10 transition-colors duration-500 ${
-          scrolled && !open ? "border-b border-line bg-bg/75 backdrop-blur-md" : "border-b border-transparent"
+          scrolled && !open
+            ? `border-b border-line ${header.blur ? "bg-bg/75 backdrop-blur-md" : "bg-bg"}`
+            : "border-b border-transparent"
         }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
           <Link href="/" className="group flex items-center gap-3" onClick={() => setOpen(false)}>
             <span className="grid h-10 w-10 place-items-center rounded-full border border-text/25 font-display text-base italic transition-colors duration-500 group-hover:border-accent group-hover:bg-accent group-hover:text-ink">
-              {profile.initials}
+              {initials}
             </span>
-            <span className="hidden text-[0.78rem] font-medium uppercase tracking-[0.2em] sm:inline">{profile.name}</span>
+            {header.showName && <span className="hidden text-[0.78rem] font-medium uppercase tracking-[0.2em] sm:inline">{name}</span>}
           </Link>
 
           <ul className="hidden items-center gap-7 lg:flex">
             {links.map((l) => (
-              <li key={l.id}>
+              <li key={l.href + l.label}>
                 <Link
-                  href={`/#${l.id}`}
-                  aria-current={active === l.id ? "true" : undefined}
+                  href={l.href}
+                  aria-current={l.sectionId && active === l.sectionId ? "true" : undefined}
                   className={`link-underline pb-1 text-[0.78rem] uppercase tracking-[0.16em] transition-colors hover:text-text ${
-                    active === l.id ? "text-text" : "text-muted"
+                    l.sectionId && active === l.sectionId ? "text-text" : "text-muted"
                   }`}
                 >
                   {l.label}
@@ -97,12 +107,14 @@ export function Navbar() {
           </ul>
 
           <div className="flex items-center gap-2">
+            {cta && (
             <Link
-              href="/#contact"
-              className="hidden rounded-full bg-bone px-5 py-2.5 text-[0.75rem] font-medium uppercase tracking-[0.16em] text-ink transition-colors duration-300 hover:bg-accent sm:inline-block"
+              href={cta.href}
+              className="hidden rounded-[var(--btn-radius)] bg-bone px-5 py-2.5 text-[0.75rem] font-medium uppercase tracking-[0.16em] text-ink transition-colors duration-300 hover:bg-accent sm:inline-block"
             >
-              Hire me
+              {cta.label}
             </Link>
+            )}
             <button
               type="button"
               className="relative grid h-11 w-11 place-items-center rounded-full border border-text/20 lg:hidden"
@@ -135,18 +147,18 @@ export function Navbar() {
           >
             <ul className="flex flex-1 flex-col justify-center gap-1">
               {links.map((l, i) => (
-                <li key={l.id} className="overflow-hidden">
+                <li key={l.href + l.label} className="overflow-hidden">
                   <motion.div
                     initial={{ y: "100%" }}
                     animate={{ y: "0%" }}
                     transition={{ duration: 0.8, delay: 0.25 + i * 0.06, ease }}
                   >
                     <Link
-                      href={`/#${l.id}`}
+                      href={l.href}
                       onClick={() => setOpen(false)}
                       className="group flex items-baseline gap-4 py-1.5 font-display text-5xl leading-tight sm:text-6xl"
                     >
-                      <span className="font-sans text-xs tracking-widest text-muted">0{i + 1}</span>
+                      <span className="font-sans text-xs tracking-widest text-muted">{String(i + 1).padStart(2, "0")}</span>
                       <span className="transition-colors group-hover:text-accent-2 group-hover:italic">{l.label}</span>
                     </Link>
                   </motion.div>
@@ -160,16 +172,18 @@ export function Navbar() {
               className="flex flex-wrap items-end justify-between gap-4 border-t border-line pt-6 text-sm text-muted"
             >
               <div>
-                {contact.email && <a href={`mailto:${contact.email}`} className="block break-all hover:text-text">{contact.email}</a>}
-                <p className="mt-1">{typeof profile.location === "string" ? profile.location : ""}</p>
+                {email && <a href={`mailto:${email}`} className="block break-all hover:text-text">{email}</a>}
+                <p className="mt-1">{location}</p>
               </div>
-              <Link
-                href="/#contact"
-                onClick={() => setOpen(false)}
-                className="rounded-full bg-bone px-5 py-2.5 text-xs font-medium uppercase tracking-[0.16em] text-ink"
-              >
-                Hire me
-              </Link>
+              {cta && (
+                <Link
+                  href={cta.href}
+                  onClick={() => setOpen(false)}
+                  className="rounded-[var(--btn-radius)] bg-bone px-5 py-2.5 text-xs font-medium uppercase tracking-[0.16em] text-ink"
+                >
+                  {cta.label}
+                </Link>
+              )}
             </motion.div>
           </motion.div>
         )}

@@ -7,13 +7,14 @@ import { useEffect, useRef } from "react";
  * specks of dust drawn on a canvas. The canvas pauses when the tab is hidden
  * and is skipped entirely for visitors who prefer reduced motion.
  */
-export function Background() {
+export function Background({ particles = true, glow = true }: { particles?: boolean; glow?: boolean }) {
   const ref = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = ref.current;
     const ctx = canvas?.getContext("2d");
-    if (!canvas || !ctx) return;
+    if (!canvas || !ctx || !particles) return;
+    const speck = getComputedStyle(document.documentElement).getPropertyValue("--text").trim() || "#f1ebe0";
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
@@ -53,7 +54,7 @@ export function Background() {
         ctx.globalAlpha = p.a * (0.6 + 0.4 * Math.sin(p.t));
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = "#f1ebe0";
+        ctx.fillStyle = speck;
         ctx.fill();
       }
       raf = requestAnimationFrame(tick);
@@ -73,12 +74,12 @@ export function Background() {
       window.removeEventListener("resize", resize);
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, []);
+  }, [particles]);
 
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-      <div className="absolute -top-1/3 left-1/2 h-[80vh] w-[120vw] -translate-x-1/2 bg-[radial-gradient(closest-side,rgb(217_138_92/0.12),transparent)]" />
-      <canvas ref={ref} className="absolute inset-0 h-full w-full" />
+      {glow && <div className="absolute -top-1/3 left-1/2 h-[80vh] w-[120vw] -translate-x-1/2 bg-[radial-gradient(closest-side,rgb(var(--accent-rgb)/0.12),transparent)]" />}
+      {particles && <canvas ref={ref} className="absolute inset-0 h-full w-full" />}
     </div>
   );
 }

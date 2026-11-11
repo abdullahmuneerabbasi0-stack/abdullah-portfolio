@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { profile } from "@/content/site";
 import { useSetIntroReady } from "./MotionProvider";
 
 const ease = [0.76, 0, 0.24, 1] as const;
@@ -12,9 +11,9 @@ const KEY = "intro-seen";
  * A short intro curtain shown once per visit. Repeat visits in the same tab
  * session, and visitors who prefer reduced motion, skip straight to the page.
  */
-export function Loader() {
+export function Loader({ enabled = true, name }: { enabled?: boolean; name: string }) {
   const setReady = useSetIntroReady();
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(enabled);
   const [play, setPlay] = useState(false);
 
   useEffect(() => {
@@ -31,7 +30,7 @@ export function Loader() {
       setReady(true);
       document.documentElement.style.overflow = "";
     };
-    if (reduced || seen) {
+    if (!enabled || reduced || seen) {
       const raf = requestAnimationFrame(finish);
       return () => cancelAnimationFrame(raf);
     }
@@ -43,10 +42,11 @@ export function Loader() {
       clearTimeout(t);
       document.documentElement.style.overflow = "";
     };
-  }, [setReady]);
+  }, [setReady, enabled]);
 
-  const words = profile.name.split(" ");
+  const words = name.split(" ");
 
+  if (!enabled && !show) return null;
   return (
     <>
       <noscript>

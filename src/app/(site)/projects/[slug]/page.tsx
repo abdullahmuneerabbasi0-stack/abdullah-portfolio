@@ -2,31 +2,34 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, CheckCircle2, Circle, ExternalLink } from "lucide-react";
-import { getProject, projects } from "@/content/projects";
-import { profile, siteUrl } from "@/content/site";
+import { siteUrl } from "@/content/site";
+import { getPublishedSiteData, getSiteData } from "@/lib/server/site-data";
 import { Icon } from "@/components/ui/Icon";
 import { Reveal } from "@/components/ui/Reveal";
 import { Spotlight } from "@/components/ui/Spotlight";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { GithubIcon } from "@/components/ui/BrandIcons";
-import { ProjectPoster, ProjectVisual } from "@/components/project/ProjectVisual";
+import { ProjectCover } from "@/components/project/ProjectVisual";
 import { Pill } from "@/components/ui/Pill";
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const { projects } = await getPublishedSiteData();
   return projects.map((p) => ({ slug: p.slug }));
 }
 
-export const dynamicParams = false;
+// Projects added later in the admin panel are rendered on first visit, then cached.
+export const dynamicParams = true;
 
 export async function generateMetadata({ params }: PageProps<"/projects/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const p = getProject(slug);
+  const { projects, hero } = await getSiteData();
+  const p = projects.find((x) => x.slug === slug);
   if (!p) return {};
   return {
     title: p.title,
     description: p.tagline,
     alternates: { canonical: `/projects/${p.slug}` },
-    openGraph: { title: `${p.title} | ${profile.name}`, description: p.tagline, url: `${siteUrl}/projects/${p.slug}` },
+    openGraph: { title: `${p.title} | ${hero.name}`, description: p.tagline, url: `${siteUrl}/projects/${p.slug}` },
   };
 }
 
@@ -44,7 +47,9 @@ function Block({ eyebrow, title, children }: { eyebrow: string; title: string; c
 
 export default async function ProjectPage({ params }: PageProps<"/projects/[slug]">) {
   const { slug } = await params;
-  const p = getProject(slug);
+  const data = await getSiteData();
+  const { projects, hero } = data;
+  const p = projects.find((x) => x.slug === slug);
   if (!p) notFound();
 
   const jsonLd = {
@@ -54,7 +59,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
     description: p.summary,
     applicationCategory: "WebApplication",
     creativeWorkStatus: `${p.status}${p.statusDetail ? ` (${p.statusDetail})` : ""}`,
-    author: { "@type": "Person", name: profile.name, url: siteUrl },
+    author: { "@type": "Person", name: hero.name, url: siteUrl },
   };
 
   return (
@@ -91,12 +96,8 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
             </div>
           </Reveal>
           <Reveal delay={0.15}>
-            <div className="relative h-[28rem] overflow-hidden rounded-[2rem] border border-line">
-              {p.visual === "studio" ? (
-                <ProjectVisual />
-              ) : (
-                <ProjectPoster title={p.title} category={p.category} technologies={p.technologies} index={projects.indexOf(p) + 1} />
-              )}
+            <div className="relative h-[28rem] overflow-hidden rounded-[var(--frame-radius)] border border-line">
+              <ProjectCover project={p} image={p.cover ? data.images[p.cover] : null} index={projects.indexOf(p) + 1} sizes="(max-width: 1024px) 100vw, 45vw" />
             </div>
           </Reveal>
         </header>
@@ -249,7 +250,7 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
         )}
 
         <Reveal>
-          <div className="glass flex flex-col items-start justify-between gap-6 rounded-[2rem] p-8 sm:flex-row sm:items-center sm:p-10">
+          <div className="glass flex flex-col items-start justify-between gap-6 rounded-[var(--frame-radius)] p-8 sm:flex-row sm:items-center sm:p-10">
             <div>
               <h2 className="font-display text-4xl">Interested in this <em className="text-accent-2">project?</em></h2>
               <p className="mt-2 text-muted">Want to follow its progress or build something similar? Let&apos;s talk.</p>

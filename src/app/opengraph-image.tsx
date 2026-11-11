@@ -1,11 +1,13 @@
 import { ImageResponse } from "next/og";
 import { profile } from "@/content/site";
+import { getPublishedSiteData } from "@/lib/server/site-data";
 
 export const alt = `${profile.name}: ${profile.roles.join(" & ")}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default function OgImage() {
+export default async function OgImage() {
+  const { hero, appearance } = await getPublishedSiteData();
   return new ImageResponse(
     (
       <div
@@ -29,17 +31,17 @@ export default function OgImage() {
             borderRadius: 24,
             alignItems: "center",
             justifyContent: "center",
-            background: "#d98a5c",
+            background: appearance.colors.accent,
             color: "#0c0a09",
             fontSize: 44,
             fontWeight: 800,
           }}
         >
-          {profile.initials}
+          {hero.initials}
         </div>
-        <div style={{ display: "flex", fontSize: 84, fontWeight: 800, marginTop: 48, letterSpacing: -2 }}>{profile.name}</div>
-        <div style={{ display: "flex", fontSize: 40, marginTop: 12, color: "#e39b6e" }}>{profile.roles.join("  ·  ")}</div>
-        <div style={{ display: "flex", fontSize: 28, marginTop: 28, color: "#a69c8f", maxWidth: 900 }}>{profile.headline}</div>
+        <div style={{ display: "flex", fontSize: 84, fontWeight: 800, marginTop: 48, letterSpacing: -2 }}>{hero.name}</div>
+        <div style={{ display: "flex", fontSize: 40, marginTop: 12, color: "#e39b6e" }}>{hero.role}</div>
+        <div style={{ display: "flex", fontSize: 28, marginTop: 28, color: "#a69c8f", maxWidth: 900 }}>{hero.headline}</div>
       </div>
     ),
     size,

@@ -24,6 +24,16 @@
   --glass-strong: rgb(241 235 224 / 0.06);
   --glass-border: rgb(241 235 224 / 0.1);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Values below are overridden by the admin panel's Appearance settings. */
+  --accent-rgb: 217 138 92;
+  --accent-ink: #9a5a35;
+  --btn-radius: 9999px;
+  --panel-radius: 3rem;
+  --panel-radius-sm: 2rem;
+  --frame-radius: 2rem;
+  --section-space: 1;
+  --font-heading: var(--ff-cormorant);
+  --font-body: var(--ff-inter);
 }
 
 @theme inline {
@@ -39,8 +49,9 @@
   --color-bone-2: var(--bone-2);
   --color-ink: var(--ink);
   --color-line: var(--line);
-  --font-sans: var(--font-inter);
-  --font-display: var(--font-serif);
+  --color-accent-ink: var(--accent-ink);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-heading);
 }
 
 html {
@@ -56,7 +67,7 @@ body {
 }
 
 ::selection {
-  background: rgb(217 138 92 / 0.4);
+  background: rgb(var(--accent-rgb) / 0.4);
   color: #fff;
 }
 
@@ -89,7 +100,7 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 0.75rem;
-    font-family: var(--font-inter);
+    font-family: var(--font-body);
     font-size: 0.7rem;
     font-weight: 500;
     letter-spacing: 0.28em;
@@ -118,7 +129,7 @@ body {
     transition: opacity 0.4s ease;
     background: radial-gradient(
       420px circle at var(--mx, 50%) var(--my, 50%),
-      rgb(217 138 92 / 0.1),
+      rgb(var(--accent-rgb) / 0.1),
       transparent 45%
     );
   }
@@ -145,6 +156,16 @@ body {
     outline-offset: 2px;
     border-radius: 4px;
     color: var(--accent-3);
+  }
+}
+
+/* Vertical rhythm of page sections, scaled by the admin "section spacing" setting. */
+.section-pad {
+  padding-block: calc(6rem * var(--section-space));
+}
+@media (min-width: 768px) {
+  .section-pad {
+    padding-block: calc(9rem * var(--section-space));
   }
 }
 
@@ -200,6 +221,12 @@ body {
 }
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+[data-motion="minimal"] .animate-marquee,
+[data-motion="minimal"] .animate-scroll-cue,
+[data-motion="minimal"] .animate-ping {
+  animation: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

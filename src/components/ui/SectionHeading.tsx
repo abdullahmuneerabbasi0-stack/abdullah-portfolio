@@ -20,7 +20,7 @@ export function SectionHeading({
     <div className={`mb-14 grid gap-6 md:mb-20 md:grid-cols-12 md:items-end ${className}`}>
       <div className="md:col-span-8">
         <Reveal>
-          <p className={`eyebrow mb-6 ${light ? "text-[#9a5a35]" : "text-accent-2"}`}>{eyebrow}</p>
+          <p className={`eyebrow mb-6 ${light ? "text-accent-ink" : "text-accent-2"}`}>{eyebrow}</p>
         </Reveal>
         <SplitText
           text={title}

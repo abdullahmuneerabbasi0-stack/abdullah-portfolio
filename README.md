@@ -2,7 +2,8 @@
 
 Personal portfolio of Muhammad Abdullah, Full-Stack Developer and AI Automation Specialist.
 
-Built with Next.js (App Router), React, TypeScript, Tailwind CSS v4 and Motion. Fully static, deployed on Vercel.
+Built with Next.js (App Router), React, TypeScript, Tailwind CSS v4 and Motion, deployed on Vercel.
+Content is managed from a built-in admin panel at `/admin`, backed by Supabase Postgres. See [ADMIN.md](ADMIN.md) for setup.
 
 ## Run locally
 
@@ -14,7 +15,10 @@ npm run build   # production build
 
 ## Editing content
 
-All text lives in `src/content/`:
+Once the database is connected, edit everything from the admin panel at `/admin` (see [ADMIN.md](ADMIN.md)).
+
+Without a database, the site falls back to the files in `src/content/` (they're also the
+starting content copied into the database on first setup):
 
 - `site.ts`: profile, about, skills, services, education, certifications, contact
 - `projects.ts`: projects and their case-study pages (`/projects/[slug]`)

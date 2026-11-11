@@ -2,17 +2,16 @@
 
 import Image from "next/image";
 import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { Download, MapPin } from "lucide-react";
-import { profile } from "@/content/site";
-import { T } from "@/components/ui/T";
+import type { HeroSettings, ResolvedImage } from "@/lib/content/types";
 import { Pill } from "@/components/ui/Pill";
 import { SplitText } from "@/components/ui/SplitText";
-import { useIntroReady } from "@/components/layout/MotionProvider";
+import { useIntroReady, useReducedMotion } from "@/components/layout/MotionProvider";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
-export function Hero() {
+export function Hero({ hero, photo }: { hero: HeroSettings; photo: ResolvedImage | null }) {
   const ready = useIntroReady();
   const reduced = useReducedMotion();
   const ref = useRef<HTMLElement>(null);
@@ -44,24 +43,24 @@ export function Hero() {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60 motion-reduce:animate-none" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
               </span>
-              {profile.availability}
+              {hero.availability}
             </motion.p>
 
             <h1 className="font-display leading-[0.95] font-normal tracking-[-0.02em]">
               <span className="sr-only">
-                Hi, I&apos;m {profile.shortName}. I&apos;m a {profile.roles.join(" and ")}.
+                Hi, I&apos;m {hero.shortName}. I&apos;m a {hero.role}.
               </span>
               <span aria-hidden="true">
                 <SplitText
                   as="span"
-                  text={`Hi, I'm ${profile.shortName}.`}
+                  text={`Hi, I'm ${hero.shortName}.`}
                   play={ready}
                   delay={0.15}
                   className="block text-[3.4rem] sm:text-[5.5rem] lg:text-[6.2rem] xl:text-[7rem]"
                 />
                 <SplitText
                   as="span"
-                  text={`I'm a ${profile.roles[0]
+                  text={`I'm a ${hero.role
                     .split(" ")
                     .map((w) => `*${w}`)
                     .join(" ")}`}
@@ -73,23 +72,24 @@ export function Hero() {
             </h1>
 
             <motion.p {...fadeUp(0.7)} className="mt-8 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
-              {profile.headline}
+              {hero.headline}
             </motion.p>
 
             <motion.div {...fadeUp(0.85)} className="mt-10 flex flex-wrap items-center gap-3">
-              <Pill href="/#projects" variant="solid">
-                View projects
-              </Pill>
-              <Pill href="/#contact" variant="outline">
-                Hire me
-              </Pill>
-              {profile.cv && (
+              {hero.ctas
+                .filter((c) => c.enabled)
+                .map((c) => (
+                  <Pill key={c.id} href={c.href} variant={c.style} external={/^https?:/.test(c.href)}>
+                    {c.label}
+                  </Pill>
+                ))}
+              {hero.cv.enabled && hero.cv.url && (
                 <a
-                  href={profile.cv}
+                  href={hero.cv.url}
                   download
                   className="link-underline ml-2 inline-flex items-center gap-2 pb-1 text-[0.8rem] uppercase tracking-[0.14em] text-muted transition-colors hover:text-text"
                 >
-                  <Download className="h-4 w-4" aria-hidden="true" /> Download CV
+                  <Download className="h-4 w-4" aria-hidden="true" /> {hero.cv.label}
                 </a>
               )}
             </motion.div>
@@ -100,9 +100,9 @@ export function Hero() {
               initial={{ clipPath: "inset(100% 0% 0% 0%)" }}
               animate={ready ? { clipPath: "inset(0% 0% 0% 0%)" } : undefined}
               transition={{ duration: 1.4, delay: 0.25, ease: [0.76, 0, 0.24, 1] }}
-              className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[1.75rem] bg-surface-2 sm:max-w-md lg:max-w-none"
+              className="relative mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-[var(--frame-radius)] bg-surface-2 sm:max-w-md lg:max-w-none"
             >
-              {profile.photo ? (
+              {photo ? (
                 <motion.div style={{ y: imgY }} className="absolute -inset-y-[8%] inset-x-0">
                   <motion.div
                     className="absolute inset-0"
@@ -111,8 +111,8 @@ export function Hero() {
                     transition={{ duration: 1.8, delay: 0.25, ease }}
                   >
                     <Image
-                      src={profile.photo}
-                      alt={`Portrait of ${profile.name}`}
+                      src={photo.src}
+                      alt={photo.alt || `Portrait of ${hero.name}`}
                       fill
                       sizes="(max-width: 1024px) 90vw, 40vw"
                       className="object-cover object-[50%_30%]"
@@ -122,16 +122,18 @@ export function Hero() {
                 </motion.div>
               ) : (
                 <div className="grid h-full place-items-center">
-                  <span className="font-display text-8xl italic text-text/90">{profile.initials}</span>
+                  <span className="font-display text-8xl italic text-text/90">{hero.initials}</span>
                 </div>
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" aria-hidden="true" />
               <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-6">
                 <div>
-                  <p className="font-display text-2xl leading-tight">{profile.name}</p>
-                  <p className="mt-1 flex items-center gap-1.5 text-xs uppercase tracking-[0.14em] text-text/70">
-                    <MapPin className="h-3.5 w-3.5 text-accent-2" aria-hidden="true" /> <T value={profile.location} />
-                  </p>
+                  <p className="font-display text-2xl leading-tight">{hero.name}</p>
+                  {hero.location && (
+                    <p className="mt-1 flex items-center gap-1.5 text-xs uppercase tracking-[0.14em] text-text/70">
+                      <MapPin className="h-3.5 w-3.5 text-accent-2" aria-hidden="true" /> {hero.location}
+                    </p>
+                  )}
                 </div>
               </figcaption>
             </motion.figure>
@@ -142,7 +144,7 @@ export function Hero() {
           {...fadeUp(1.05)}
           className="mx-auto mt-14 grid w-full max-w-7xl grid-cols-2 gap-x-6 gap-y-5 border-t border-line pt-6 sm:grid-cols-4"
         >
-          {profile.focus.map((f) => (
+          {hero.focus.map((f) => (
             <dl key={f.label}>
               <dt className="text-[0.68rem] uppercase tracking-[0.22em] text-muted">{f.label}</dt>
               <dd className="mt-1.5 font-display text-xl leading-snug">{f.value}</dd>
