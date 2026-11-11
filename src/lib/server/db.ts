@@ -37,6 +37,10 @@ export function db(): Sql {
   if (!raw) throw new Error("DATABASE_URL is not set");
   if (!g.__portfolioSql) {
     const url = normalizeDatabaseUrl(raw);
+    if (!/^postgres(ql)?:\/\//.test(url)) {
+      // Without this, a bare password here is read as a hostname and fails with ENOTFOUND.
+      throw new Error("DATABASE_URL must be the full postgresql:// connection string, not just the password.");
+    }
     const local = /@(localhost|127\.0\.0\.1)(:|\/)/.test(url) || process.env.DATABASE_SSL === "disable";
     g.__portfolioSql = postgres(url, {
       prepare: false,
