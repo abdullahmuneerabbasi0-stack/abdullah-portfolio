@@ -14,8 +14,10 @@ using the files in `src/content/`.
    Save the database password it asks you for.
 2. **Create the tables.** In Supabase, open **SQL Editor > New query**, paste the whole of
    [`db/schema.sql`](db/schema.sql) and press **Run**. It's safe to run again later.
-3. **Copy the connection string.** In Supabase, click **Connect**, choose **Transaction pooler**
-   and copy the URI (port `6543`). Replace `[YOUR-PASSWORD]` with your database password.
+3. **Copy the connection string.** In Supabase, click **Connect**, choose **Session pooler**
+   (or Transaction pooler; the site switches it to the session pooler automatically, because the
+   transaction pooler can leave admin pages hanging) and copy the URI. Replace `[YOUR-PASSWORD]`
+   with your database password. Paste the whole `postgresql://...` link, not just the password.
 4. **Add two environment variables in Vercel** (Project > Settings > Environment Variables,
    for Production, Preview and Development):
    - `DATABASE_URL`: the connection string from step 3.
